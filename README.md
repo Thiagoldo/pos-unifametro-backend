@@ -1,7 +1,7 @@
 # Sistema FullStack para Conversas em Tempo Real
 ## FalaBLAU
 
-Um sistema de chat em tempo real construído com arquitetura de microsserviços, utilizando Flask (backend) e React (frontend), totalmente containerizado com Docker.
+Um sistema de chat em tempo real construído com arquitetura de microsserviços, utilizando Flask (backend) e React (frontend), totalmente containerizado com Docker. Usa Kafka como broker de mensageria para eventos em tempo real e gerenciamento de sessões WebSocket.
 
 ## 🏗️ Arquitetura
 
@@ -14,7 +14,7 @@ Um sistema de chat em tempo real construído com arquitetura de microsserviços,
 
 ### Infraestrutura
 - **PostgreSQL**: Banco de dados principal
-- **Redis**: Cache e gerenciamento de sessões WebSocket
+- **Kafka**: Broker de mensageria e gerenciamento de sessões WebSocket
 - **Nginx**: Load balancer e proxy reverso
 - **Docker**: Containerização completa
 
@@ -108,7 +108,7 @@ npm start
 | Auth Service | 5000 | API de autenticação |
 | Chat Service | 5001 | API de chat e WebSocket |
 | PostgreSQL | 5432 | Banco de dados |
-| Redis | 6379 | Cache e sessões |
+| Kafka | 9092 | Broker de mensageria |
 | Nginx | 80 | Load balancer |
 
 ## 🔧 Funcionalidades
@@ -141,7 +141,7 @@ npm start
 - **Flask-SQLAlchemy**: ORM para banco de dados
 - **Flask-JWT-Extended**: Autenticação JWT
 - **PostgreSQL**: Banco de dados relacional
-- **Redis**: Cache e gerenciamento de sessões
+- **Kafka**: Broker de mensageria e gerenciamento de sessões WebSocket
 - **Gunicorn**: Servidor WSGI para produção
 
 ### Frontend
@@ -242,8 +242,8 @@ SECRET_KEY=your-production-secret-key
 # Banco de dados
 DATABASE_URL=postgresql://user:pass@host:port/db
 
-# Redis
-REDIS_HOST=redis-production-host
+# Kafka
+KAFKA_BOOTSTRAP_SERVERS=kafka1:9092,kafka2:9092
 
 # URLs dos serviços
 AUTH_SERVICE_URL=https://auth.yourdomain.com
@@ -262,7 +262,7 @@ CHAT_SERVICE_URL=https://chat.yourdomain.com
 
 2. **WebSocket não conecta:**
    - Verifique CORS no chat-service
-   - Confirme se o Redis está funcionando
+   - Confirme se o Kafka (broker) está funcionando e os tópicos necessários existem
    - Valide o token JWT
 
 3. **Frontend não carrega:**
@@ -297,4 +297,3 @@ curl http://localhost:5001/health
 ## 📝 Licença
 
 Este projeto é desenvolvido para fins educacionais como parte da especialização em desenvolvimento fullstack.
-
