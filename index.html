@@ -79,9 +79,20 @@
                     <span class="stack">React ⚛️</span>
                     <span class="stack">Kafka 🧩</span>
                     <span class="stack">Docker 🐳</span>
-                    <span class="stack">PostgreSQL 🐘</span>
+                    <span class="stack">PostgreSQL 🐘 e MongoDB 🐼</span>
+
                 </div>
-                <div class="rodape">Equipe FalaBLAU — Pós-Graduação Unifametro</div>
+
+            </section>
+
+            <!-- Regras de Negócio -->
+            <section data-transition="fade">
+                <h2>📜 Regras de Negócio</h2>
+                <ul>
+                    <li class="fragment fade-up">Preferência por usuárias geograficamente mais próximos.</li>
+                    <li class="fragment fade-up">Todos os históricos de mensagens são armazenados no banco de dados.</li>
+                    <li class="fragment fade-up">Sistema deve suportar múltiplos usuários simultâneos.</li>
+                </ul>
             </section>
 
             <!-- FLUXO GERAL -->
@@ -175,6 +186,24 @@ CREATE TABLE messages (
           </code></pre>
             </section>
 
+            <!-- MONGODB  -->
+            <section data-transition="fade">
+                <h2>🐼 Banco de Dados (MongoDB)</h2>
+                <ul>
+                    <li class="fragment fade-up">Armazena dados não relacionais, como sessões e preferências.</li>
+                    <li class="fragment fade-up">Flexível para dados dinâmicos do usuário.</li>
+                </ul>
+                <pre class="fragment"><code data-trim class="language-javascript">
+import { MongoClient } from "mongodb";
+
+const client = new MongoClient("mongodb://mongo:27017");
+await client.connect();
+const db = client.db("chatdb");
+const sessions = db.collection("sessions");
+const preferences = db.collection("preferences");
+            </code></pre>
+            </section>
+
             <!-- DOCKER -->
             <section data-transition="slide">
                 <h2>🐳 Docker Compose (Infraestrutura)</h2>
@@ -221,9 +250,12 @@ services:
             <section data-transition="fade">
                 <h2>🏁 Conclusão</h2>
                 <ul>
-                    <li class="fragment fade-up">Frontend e backend desacoplados permitem evolução independente.</li>
-                    <li class="fragment fade-up">Kafka garante resiliência e processamento assíncrono.</li>
-                    <li class="fragment fade-up">Arquitetura moderna, escalável e fácil de manter.</li>
+                    <li class="fragment fade-up">Arquitetura modular facilita manutenção e escalabilidade.</li>
+                    <li class="fragment fade-up">Comunicação via Kafka assegura alta disponibilidade.</li>
+                    <li class="fragment fade-up">Frontend React proporciona experiência de usuário fluida.</li>
+                    <li class="fragment fade-up">Melhor desempenho em dispositivos móveis.</li>
+                    <li class="fragment fade-up">Menor carga no servidor.</li>
+                    <li class="fragment fade-up">Experiência de usuário mais responsiva.</li>
                 </ul>
                 <div style="margin-top: 40px;">
                     <h4 class="fragment fade-up">👥 Equipe FalaBLAU</h4>
