@@ -3,9 +3,8 @@
 
 Um sistema de chat em tempo real construído com arquitetura de microsserviços avançada, utilizando Flask (backend), React (frontend), com API Gateway, sistema de mensageria e autenticação centralizada, totalmente containerizado com Docker.
 
-![Arquitetura do Sistema](docs/arquitetura-sistema.png)
+![Arquitetura do Sistema](arquitetura-sistema.jpeg)
 
-> 📖 **Documentação Detalhada**: Para uma visão aprofundada da arquitetura, fluxos de dados e padrões implementados, consulte a [Documentação de Arquitetura Detalhada](docs/arquitetura-detalhada.md).
 
 ## 🏗️ Arquitetura
 
