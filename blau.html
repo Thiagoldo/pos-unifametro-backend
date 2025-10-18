@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Arquitetura de Chat em Tempo Real — Victor Adler</title>
+
+    <!-- Reveal.js via CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/white.css" id="theme">
+
+    <style>
+        :root {
+            --azul-claro: #3FA9F5;
+            --branco: #FFFFFF;
+            --fundo: #0A0A0A;
+        }
+
+        body {
+            background: var(--fundo);
+            color: var(--branco);
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            color: var(--azul-claro);
+        }
+
+        pre {
+            background: #111;
+            color: #f2f2f2;
+            border-left: 4px solid var(--azul-claro);
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+
+        ul li::before {
+            content: "▹";
+            color: var(--azul-claro);
+            margin-right: 6px;
+        }
+
+        .rodape {
+            position: absolute;
+            bottom: 20px;
+            right: 40px;
+            font-size: 0.8rem;
+            color: #ccc;
+        }
+
+        .stack {
+            display: inline-block;
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 10px 14px;
+            margin: 5px;
+            color: var(--branco);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- CAPA -->
+            <section data-transition="fade">
+                <h1>FalaBlau</h1>
+                <h3>Flask · React · Kafka · Docker · PostgreSQL</h3>
+                <div>
+                    <span class="stack">Flask 🐍</span>
+                    <span class="stack">React ⚛️</span>
+                    <span class="stack">Kafka 🧩</span>
+                    <span class="stack">Docker 🐳</span>
+                    <span class="stack">PostgreSQL 🐘</span>
+                </div>
+                <div class="rodape">Victor Adler — Desenvolvedor Full Stack</div>
+            </section>
+
+            <!-- FLUXO GERAL -->
+            <section data-transition="slide">
+                <h2>🌐 Fluxo de Comunicação</h2>
+                <pre><code data-trim>
+Usuário → React Frontend
+          ↓  WebSocket / HTTP
+       Flask Backend
+          ↓  Produz Mensagem
+       Kafka (Broker / Topic)
+          ↓  Consome Mensagem
+       Flask / Worker → PostgreSQL
+          </code></pre>
+                <ul>
+                    <li class="fragment fade-up">Frontend envia mensagens via Socket.IO.</li>
+                    <li class="fragment fade-up">Flask publica no tópico Kafka.</li>
+                    <li class="fragment fade-up">Consumidor Kafka salva no banco.</li>
+                    <li class="fragment fade-up">Mensagens são emitidas em tempo real.</li>
+                </ul>
+            </section>
+
+            <!-- FRONTEND -->
+            <section data-transition="fade">
+                <h2>⚛️ Frontend (React)</h2>
+                <ul>
+                    <li class="fragment fade-up">Interface SPA construída com Vite + React + TypeScript.</li>
+                    <li class="fragment fade-up">Gerencia estado e conexões via Socket.IO Client.</li>
+                    <li class="fragment fade-up">Envia e recebe mensagens em tempo real.</li>
+                </ul>
+                <pre class="fragment"><code data-trim class="language-tsx">
+import { io } from "socket.io-client";
+const socket = io("http://localhost:5000");
+
+socket.emit("send_message", { user: "Victor", text: "Olá mundo!" });
+socket.on("receive_message", (data) => console.log(data));
+          </code></pre>
+            </section>
+
+            <!-- BACKEND -->
+            <section data-transition="fade">
+                <h2>🐍 Backend (Flask + Kafka)</h2>
+                <ul>
+                    <li class="fragment fade-up">Flask expõe endpoints REST e WebSockets.</li>
+                    <li class="fragment fade-up">Produz e consome mensagens do Kafka.</li>
+                    <li class="fragment fade-up">Integra com PostgreSQL para persistência.</li>
+                </ul>
+                <pre class="fragment"><code data-trim class="language-python">
+from flask import Flask, request
+from flask_socketio import SocketIO
+from kafka import KafkaProducer
+
+app = Flask(__name__)
+socketio = SocketIO(app, cors_allowed_origins="*")
+producer = KafkaProducer(bootstrap_servers="kafka:9092")
+
+@socketio.on("send_message")
+def handle_send(data):
+    producer.send("chat_topic", value=data["text"].encode("utf-8"))
+    socketio.emit("receive_message", data, broadcast=True)
+          </code></pre>
+            </section>
+
+            <!-- KAFKA -->
+            <section data-transition="zoom">
+                <h2>🧩 Kafka (Mensageria)</h2>
+                <pre><code data-trim>
+[Producer] Flask Backend  →  [Topic: chat_topic]  →  [Consumer] Worker
+          </code></pre>
+                <ul>
+                    <li class="fragment fade-up">Kafka gerencia o tráfego de mensagens entre usuários.</li>
+                    <li class="fragment fade-up">Garante entrega assíncrona e escalável.</li>
+                    <li class="fragment fade-up">Permite múltiplos consumidores simultâneos.</li>
+                </ul>
+            </section>
+
+            <!-- BANCO -->
+            <section data-transition="fade">
+                <h2>🐘 Banco de Dados (PostgreSQL)</h2>
+                <ul>
+                    <li class="fragment fade-up">Armazena usuários, salas e histórico de mensagens.</li>
+                    <li class="fragment fade-up">Consultado por APIs REST (Flask).</li>
+                </ul>
+                <pre class="fragment"><code data-trim class="language-sql">
+CREATE TABLE messages (
+  id SERIAL PRIMARY KEY,
+  username VARCHAR(50),
+  content TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+          </code></pre>
+            </section>
+
+            <!-- DOCKER -->
+            <section data-transition="slide">
+                <h2>🐳 Docker Compose (Infraestrutura)</h2>
+                <pre><code data-trim class="language-yaml">
+version: "3.9"
+services:
+  frontend:
+    build: ./frontend
+    ports: ["5173:5173"]
+  backend:
+    build: ./backend
+    ports: ["5000:5000"]
+    depends_on: [kafka]
+  kafka:
+    image: bitnami/kafka:latest
+    ports: ["9092:9092"]
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: chatdb
+    ports: ["5432:5432"]
+          </code></pre>
+            </section>
+
+            <!-- CONCLUSÃO -->
+            <section data-transition="fade">
+                <h2>🏁 Conclusão</h2>
+                <ul>
+                    <li class="fragment fade-up">Frontend e backend desacoplados permitem evolução independente.</li>
+                    <li class="fragment fade-up">Kafka garante resiliência e processamento assíncrono.</li>
+                    <li class="fragment fade-up">Arquitetura moderna, escalável e fácil de manter.</li>
+                </ul>
+                <h4 class="fragment fade-up" style="margin-top:30px;">Victor Adler</h4>
+                <h4 class="fragment fade-up" style="margin-top:30px;">Jefferson Galvão</h4>
+                <h4 class="fragment fade-up" style="margin-top:30px;">Thiago Lima</h4>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: true,
+            transition: 'fade',
+            backgroundTransition: 'zoom',
+            controlsTutorial: true
+        });
+    </script>
+</body>
+
+</html>
