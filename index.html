@@ -78,9 +78,10 @@
                     <span class="stack">React ⚛️</span>
                     <span class="stack">Kafka 🧩</span>
                     <span class="stack">Docker 🐳</span>
-                    <span class="stack">PostgreSQL 🐘</span>
+                    <span class="stack">PostgreSQL 🐘 e MongoDB 🐼</span>
+
                 </div>
-                <div class="rodape">Victor Adler — Desenvolvedor Full Stack</div>
+
             </section>
 
             <!-- FLUXO GERAL -->
@@ -172,6 +173,24 @@ CREATE TABLE messages (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
           </code></pre>
+            </section>
+
+            <!-- MONGODB  -->
+            <section data-transition="fade">
+                <h2>🐼 Banco de Dados (MongoDB)</h2>
+                <ul>
+                    <li class="fragment fade-up">Armazena dados não relacionais, como sessões e preferências.</li>
+                    <li class="fragment fade-up">Flexível para dados dinâmicos do usuário.</li>
+                </ul>
+                <pre class="fragment"><code data-trim class="language-javascript">
+import { MongoClient } from "mongodb";
+
+const client = new MongoClient("mongodb://mongo:27017");
+await client.connect();
+const db = client.db("chatdb");
+const sessions = db.collection("sessions");
+const preferences = db.collection("preferences");
+            </code></pre>
             </section>
 
             <!-- DOCKER -->
