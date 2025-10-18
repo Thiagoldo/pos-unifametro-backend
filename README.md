@@ -1,10 +1,12 @@
-# Sistema FullStack para Conversas em Tempo Real
-## BLAU  
+# FalaBLAU - Sistema FullStack para Conversas em Tempo Real
+
+![FalaBLAU Logo](docs/fala-blau-logo.png)
 
 Um sistema de chat em tempo real construído com arquitetura de microsserviços avançada, utilizando Flask (backend), React (frontend), com API Gateway, sistema de mensageria e autenticação centralizada, totalmente containerizado com Docker.
 
-![Arquitetura do Sistema](arquitetura-sistema.jpeg)
+![Arquitetura do Sistema](docs/arquitetura-sistema.png)
 
+> 📖 **Documentação Detalhada**: Para uma visão aprofundada da arquitetura, fluxos de dados e padrões implementados, consulte a [Documentação de Arquitetura Detalhada](docs/arquitetura-detalhada.md).
 
 ## 🏗️ Arquitetura
 
@@ -513,14 +515,34 @@ curl http://localhost:5001/health
 - [ ] **Advanced threat protection**
 - [ ] **Backup e disaster recovery**
 
-## 👥 Equipe 5 
-- Jefferson Sant'ana Galvão
-- Victor Cavalcante  
-- Thiago Lima
+## 👥 Equipe FalaBLAU 
+- **Jefferson Sant'ana Galvão** - Tech Lead & Backend Developer
+- **Victor Cavalcante** - Frontend Developer & UI/UX  
+- **Thiago Lima** - DevOps & Infrastructure Engineer
+
+---
+
+## 🏆 Sobre o FalaBLAU
+
+O **FalaBLAU** é mais que um sistema de chat - é uma plataforma completa de comunicação em tempo real, desenvolvida com as melhores práticas de arquitetura de software e tecnologias modernas. 
+
+### Missão
+Conectar pessoas através de uma comunicação instantânea, segura e escalável.
+
+### Visão  
+Ser referência em sistemas de chat corporativo com arquitetura de microsserviços.
+
+### Valores
+- **Inovação**: Sempre utilizando as tecnologias mais avançadas
+- **Qualidade**: Código limpo e bem documentado  
+- **Escalabilidade**: Preparado para crescer
+- **Segurança**: Proteção de dados em primeiro lugar
 
 ---
 
 ## 📝 Licença
 
 Este projeto é desenvolvido para fins educacionais como parte da especialização em desenvolvimento fullstack.
+
+**FalaBLAU** © 2025 - Equipe 5 | Pós-Graduação Unifametro
 
