@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Arquitetura de Chat em Tempo Real — Victor Adler</title>
+    <title>FalaBLAU — Sistema de Chat em Tempo Real</title>
 
     <!-- Reveal.js via CDN -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
@@ -71,7 +71,8 @@
 
             <!-- CAPA -->
             <section data-transition="fade">
-                <h1>FalaBlau</h1>
+                <h1>FalaBLAU</h1>
+                <h2>Sistema de Chat em Tempo Real</h2>
                 <h3>Flask · React · Kafka · Docker · PostgreSQL</h3>
                 <div>
                     <span class="stack">Flask 🐍</span>
@@ -80,7 +81,7 @@
                     <span class="stack">Docker 🐳</span>
                     <span class="stack">PostgreSQL 🐘</span>
                 </div>
-                <div class="rodape">Victor Adler — Desenvolvedor Full Stack</div>
+                <div class="rodape">Equipe FalaBLAU — Pós-Graduação Unifametro</div>
             </section>
 
             <!-- FLUXO GERAL -->
@@ -200,6 +201,22 @@ services:
           </code></pre>
             </section>
 
+            <!-- ARQUITETURA DO SISTEMA -->
+            <section data-transition="zoom">
+                <h2>🏗️ Arquitetura Completa do Sistema</h2>
+                <div style="display: flex; justify-content: center; align-items: center; height: 600px;">
+                    <img src="https://raw.githubusercontent.com/Thiagoldo/pos-unifametro-backend/main/docs/arquitetura-sistema.png" 
+                         alt="Arquitetura do Sistema FalaBLAU" 
+                         style="max-width: 90%; max-height: 90%; object-fit: contain; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+                </div>
+                <ul style="font-size: 0.9em; margin-top: 20px;">
+                    <li class="fragment fade-up"><strong>Backend:</strong> Microsserviços Python/Flask (Auth + Chat)</li>
+                    <li class="fragment fade-up"><strong>Frontend:</strong> NodeJS/React com WebSocket</li>
+                    <li class="fragment fade-up"><strong>Middleware:</strong> Keycloak + Kong + NGINX + Kafka</li>
+                    <li class="fragment fade-up"><strong>Dados:</strong> PostgreSQL (SQL) + NoSQL (Chat) + Redis</li>
+                </ul>
+            </section>
+
             <!-- CONCLUSÃO -->
             <section data-transition="fade">
                 <h2>🏁 Conclusão</h2>
@@ -208,9 +225,12 @@ services:
                     <li class="fragment fade-up">Kafka garante resiliência e processamento assíncrono.</li>
                     <li class="fragment fade-up">Arquitetura moderna, escalável e fácil de manter.</li>
                 </ul>
-                <h4 class="fragment fade-up" style="margin-top:30px;">Victor Adler</h4>
-                <h4 class="fragment fade-up" style="margin-top:30px;">Jefferson Galvão</h4>
-                <h4 class="fragment fade-up" style="margin-top:30px;">Thiago Lima</h4>
+                <div style="margin-top: 40px;">
+                    <h4 class="fragment fade-up">👥 Equipe FalaBLAU</h4>
+                    <p class="fragment fade-up"><strong>Jefferson Sant'ana Galvão</strong> - Tech Lead</p>
+                    <p class="fragment fade-up"><strong>Victor Cavalcante</strong> - Frontend Developer</p>
+                    <p class="fragment fade-up"><strong>Thiago Lima</strong> - DevOps Engineer</p>
+                </div>
             </section>
 
         </div>
