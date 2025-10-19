@@ -1,0 +1,7 @@
+Flask
+Flask-SocketIO
+gunicorn
+eventlet
+pika
+python-dotenv
+kombu

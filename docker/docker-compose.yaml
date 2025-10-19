@@ -1,0 +1,113 @@
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ../nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - kong
+    networks:
+      - app-network
+
+  kong:
+    image: kong:latest
+    depends_on:
+      - postgresql
+    environment:
+      KONG_DATABASE: postgres
+      KONG_PG_HOST: postgresql
+      KONG_PG_USER: kong
+      KONG_PG_PASSWORD: kong
+    ports:
+      - "8000:8000"
+      - "8443:8443"
+      - "8001:8001"
+    networks:
+      - app-network
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    command: start-dev
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+
+  user-service:
+    build:
+      context: ../microservices/users-service
+    depends_on:
+      - postgresql
+    environment:
+      - DATABASE_URL=postgresql://user:pass@postgresql:5432/chat_app
+    ports:
+      - "3001:3001"
+    networks:
+      - app-network
+
+  chat-service:
+    build:
+      context: ../microservices/chat-service
+    depends_on:
+      - mongodb
+    environment:
+      - MONGODB_URL=mongodb://mongodb:27017/chat_app
+    ports:
+      - "3002:3002"
+    networks:
+      - app-network
+
+  websocket-service:
+    build:
+      context: ../microservices/websocket-service
+    depends_on:
+      - rabbitmq
+    environment:
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
+    ports:
+      - "3003:3003"
+    networks:
+      - app-network
+
+  postgresql:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: 
+      
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - app-network
+
+  mongodb:
+    image: mongo:5
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - app-network
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
+  mongo-data:
