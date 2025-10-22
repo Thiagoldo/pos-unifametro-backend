@@ -1,0 +1,40 @@
+# === Python ===
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+
+# === Virtual Environment ===
+.venv/
+venv/
+.env
+
+# === Docker ===
+Dockerfile
+.dockerignore
+
+# === Git ===
+.git/
+.gitignore
+
+# === IDEs ===
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# === Logs ===
+*.log
+logs/
+
+# === Sistema ===
+.DS_Store
+Thumbs.db
+*~
+
+# === Outros ===
+README.md
+tests/
+docs/

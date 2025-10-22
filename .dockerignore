@@ -1,0 +1,53 @@
+# === Git ===
+.git
+.gitignore
+
+# === Docker ===
+Dockerfile
+docker-compose*.yml
+docker-compose*.yaml
+.dockerignore
+
+# === Python ===
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+.pytest_cache
+.coverage
+.venv
+venv/
+.env
+
+# === Node.js ===
+node_modules
+npm-debug.log
+yarn-error.log
+
+# === IDEs ===
+.vscode
+.idea
+*.swp
+*.swo
+
+# === Sistema ===
+.DS_Store
+Thumbs.db
+*.tmp
+*.log
+
+# === Documentação ===
+README.md
+docs/
+*.md
+
+# === Tests ===
+tests/
+test/
+*_test.py
+*_test.js
+
+# === Outros ===
+.cache
+*.backup

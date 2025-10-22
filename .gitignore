@@ -1,0 +1,197 @@
+# === Docker & Containers ===
+# Docker Compose override files
+docker-compose.override.yml
+docker-compose.override.yaml
+
+# Docker volumes data (dados persistentes)
+docker/postgres-data/
+docker/mongo-data/
+docker/rabbitmq-data/
+
+# Container logs
+*.log
+logs/
+
+# === Python ===
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# === Node.js ===
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# === Environment Variables ===
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# === IDEs & Editors ===
+# VSCode
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# JetBrains IDEs
+.idea/
+*.swp
+*.swo
+*~
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
+
+# === Sistema Operacional ===
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+
+# === Temporários & Cache ===
+*.tmp
+*.temp
+.cache/
+.sass-cache/
+
+# === Certificados & Chaves ===
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+
+# === Backups ===
+*.backup
+*.bak
+*.swp
+*.swo
+
+# === Logs específicos do projeto ===
+microservices/*/logs/
+nginx/logs/
+*.access.log
+*.error.log
+
+# === Dados de desenvolvimento ===
+# Dumps de banco de dados
+*.sql.gz
+*.dump
+*.backup
+
+# Arquivos de configuração local
+config.local.py
+settings.local.py
+local_settings.py
+
+# === Específico do projeto FalaBlau ===
+# Dados persistentes dos containers
+postgres-data/
+mongo-data/
+rabbitmq-data/
+
+# Scripts temporários
+temp_*.sh
+debug_*.py
+
+# Arquivos de configuração sensíveis
+secrets/
+.secrets

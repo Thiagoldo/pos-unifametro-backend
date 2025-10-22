@@ -6,7 +6,94 @@ Um sistema de chat em tempo real construído com arquitetura de microsserviços 
 
 ![Arquitetura do Sistema](public/arquitetura-sistema.jpeg)
 
-> 📖 **Documentação Detalhada**: Para uma visão aprofundada da arquitetura, fluxos de dados e padrões implementados, consulte a [Documentação de Arquitetura Detalhada](docs/arquitetura-detalhada.md).
+## � Configuração Rápida em Novo PC
+
+### 📋 Pré-requisitos
+
+**1. Docker e Docker Compose**
+```bash
+# Ubuntu/Debian
+sudo apt update
+sudo apt install docker.io docker-compose
+
+# macOS (Homebrew)
+brew install docker docker-compose
+
+# Verificar instalação
+docker --version
+docker-compose --version
+```
+
+### 🔧 Configuração Inicial
+
+**1. Após git pull/clone:**
+```bash
+# Dar permissões aos scripts
+chmod +x scripts/*.sh
+
+# Verificar estrutura
+ls -la scripts/
+```
+
+**2. Inicializar Sistema:**
+```bash
+# Opção 1: Modo simplificado (recomendado)
+./scripts/start-simple.sh
+
+# Opção 2: Com retry para internet lenta
+./scripts/start.sh
+```
+
+**3. Verificar Status:**
+```bash
+./scripts/status.sh
+```
+
+### 🌐 URLs Disponíveis
+
+Após inicialização bem-sucedida:
+- **Sistema Principal**: http://localhost
+- **Kong Admin**: http://localhost:8001
+- **Keycloak**: http://localhost:8080
+- **Users Service**: http://localhost:3001
+- **Chat Service**: http://localhost:3002
+- **WebSocket Service**: http://localhost:3003
+- **RabbitMQ Management**: http://localhost:15672 (guest/guest)
+
+### 🔧 Scripts de Gerenciamento
+
+| Script | Função |
+|--------|--------|
+| `./scripts/start-simple.sh` | Inicia sistema (modo rápido) |
+| `./scripts/start.sh` | Inicia com retry (internet lenta) |
+| `./scripts/stop.sh` | Para todos os serviços |
+| `./scripts/rebuild.sh` | Reconstrói e reinicia |
+| `./scripts/logs.sh` | Visualizador de logs interativo |
+| `./scripts/status.sh` | Status completo do sistema |
+
+## 🐛 Solução de Problemas Comuns
+
+### Kong não inicia
+```bash
+docker compose run --rm kong-migrations kong migrations bootstrap
+docker compose restart kong
+```
+
+### User Service não conecta
+```bash
+docker compose restart user-service
+```
+
+### Nginx retorna 502
+```bash
+docker compose restart nginx
+```
+
+### Reset completo
+```bash
+docker compose down -v
+./scripts/start-simple.sh
+```
 
 ## 🏗️ Arquitetura
 
