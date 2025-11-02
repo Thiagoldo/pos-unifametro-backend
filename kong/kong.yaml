@@ -6,7 +6,7 @@ services:
   routes:
   - name: user-routes
     paths:
-    - /users-api
+    - /api/users
     strip_path: true
 
 - name: chat-service
@@ -14,7 +14,7 @@ services:
   routes:
   - name: chat-routes
     paths:
-    - /chats-api
+    - /api/chats
     strip_path: true
 
 - name: websocket-service
