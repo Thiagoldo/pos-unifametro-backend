@@ -28,21 +28,21 @@ services:
     restart: always
 
   keycloak:
-  image: quay.io/keycloak/keycloak:26.4.2
-  environment:
-    KC_BOOTSTRAP_ADMIN_USERNAME: admin
-    KC_BOOTSTRAP_ADMIN_PASSWORD: admin
-    KC_PROXY: edge
-    KC_HTTP_ENABLED: 'true'
-    KC_HOSTNAME: localhost
-    KC_HOSTNAME_PATH: /auth
-    KC_HOSTNAME_STRICT_HTTPS: 'false'
-  command:
-    - start
-    - --proxy-headers
-    - forwarded
-  networks:
-    - app-network
+    image: quay.io/keycloak/keycloak:26.4.2
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      KC_PROXY: edge
+      KC_HTTP_ENABLED: 'true'
+      KC_HOSTNAME: localhost
+      KC_HTTP_RELATIVE_PATH: /auth
+      KC_HOSTNAME_STRICT_HTTPS: 'false'
+    command:
+      - start
+      - --proxy-headers
+      - forwarded
+    networks:
+      - app-network
 
   user-service:
     build:
