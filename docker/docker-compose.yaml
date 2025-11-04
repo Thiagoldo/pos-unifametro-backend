@@ -1,3 +1,5 @@
+
+
 services:
   nginx:
     image: nginx:1.29.3-alpine
@@ -29,12 +31,17 @@ services:
 
   keycloak:
     image: quay.io/keycloak/keycloak:26.4.2
+    ports:
+      - "8081:8080"
     env_file:
       - ../.env
     command:
       - start
       - --proxy-headers
       - forwarded
+    depends_on:
+      postgresql:
+        condition: service_healthy
     networks:
       - app-network
 
@@ -94,6 +101,8 @@ services:
 
   mongodb:
     image: mongo:8.2.1-noble
+    environment:
+      MONGO_INITDB_DATABASE: chat_app
     volumes:
       - mongo-data:/data/db
     networks:
