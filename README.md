@@ -146,4 +146,14 @@ Para acessar as áreas administrativas dos serviços, utilize os seguintes ender
 
 ## 📝 Variáveis de Ambiente
 
-O projeto utiliza variáveis de ambiente para configurar os serviços. Cada microsserviço possui um arquivo `.env` que precisa ser configurado corretamente. Consulte os arquivos `config.py` de cada serviço para mais detalhes sobre as variáveis necessárias.
+O projeto utiliza um arquivo `.env` para configurar as variáveis de ambiente. Para configurar o ambiente local, siga os seguintes passos:
+
+1. **Crie uma cópia do arquivo de exemplo:**
+
+   ```bash
+   cp .env.example .env
+   ```
+
+2. **Altere as variáveis no arquivo `.env` conforme necessário.**
+
+O arquivo `.env` é ignorado pelo Git, então suas chaves e senhas não serão enviadas para o repositório.
