@@ -97,3 +97,17 @@ Para mais detalhes sobre os endpoints de cada serviço, consulte a documentaçã
 - **User Service Docs**: `http://localhost:3001/doc`
 - **Chat Service Docs**: `http://localhost:3002/doc`
 - **WebSocket Service AsyncAPI**: `http://localhost:3003/asyncapi` (Exposto pelo `asyncapi.yaml`)
+
+## 🏛️ Áreas Administrativas
+
+Para acessar as áreas administrativas dos serviços, utilize os seguintes endereços:
+
+- **Keycloak**:
+  - **URL**: `http://localhost/auth/`
+  - **Usuário**: `admin`
+  - **Senha**: `admin`
+
+- **RabbitMQ**:
+  - **URL**: `http://localhost/rabbitmq/`
+  - **Usuário**: `guest`
+  - **Senha**: `guest`
