@@ -178,4 +178,126 @@ sequenceDiagram
     chat-service-->>Kong: Response with chat ID
     Kong-->>Client: Response with chat ID
     Client->>websocket-service: Connect to chat room
+
+## 8. User Profile Management
+
+### Data Flow Diagram
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Kong
+    participant user-service
+    participant PostgreSQL
+
+    Client->>Kong: GET /api/users/profile
+    Kong->>user-service: /profile
+    user-service->>PostgreSQL: Get user profile
+    PostgreSQL-->>user-service: User profile
+    user-service-->>Kong: Response
+    Kong-->>Client: Response
+
+    Client->>Kong: PUT /api/users/profile
+    Kong->>user-service: /profile
+    user-service->>PostgreSQL: Update user profile
+    PostgreSQL-->>user-service: Profile updated
+    user-service-->>Kong: Response
+    Kong-->>Client: Response
+```
+
+### User Story
+
+```mermaid
+graph TD
+    A[User wants to view their profile] --> B{Clicks on profile page};
+    B --> C[System fetches and displays user profile];
+    C --> D{User wants to update their profile};
+    D --> E[User edits profile information];
+    E --> F[Submits changes];
+    F --> G[System updates profile in database];
+```
+
+## 9. Notification Management
+
+### Data Flow Diagram
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Kong
+    participant user-service
+    participant PostgreSQL
+    participant RabbitMQ
+
+    Client->>Kong: GET /api/users/notifications
+    Kong->>user-service: /notifications
+    user-service->>PostgreSQL: Get notifications
+    PostgreSQL-->>user-service: Notification list
+    user-service-->>Kong: Response
+    Kong-->>Client: Response
+
+    Client->>Kong: POST /api/users/notifications
+    Kong->>user-service: /notifications
+    user-service->>PostgreSQL: Create notification
+    PostgreSQL-->>user-service: Notification created
+    user-service->>RabbitMQ: Publish to '''notifications''' queue
+    user-service-->>Kong: Response
+    Kong-->>Client: Response
+```
+
+### User Story
+
+```mermaid
+graph TD
+    A[User wants to see their notifications] --> B{Clicks on notifications icon};
+    B --> C[System fetches and displays notifications];
+    C --> D{A new notification is created by the system};
+    D --> E[System saves notification in database];
+    E --> F[System sends notification to a queue for real-time update];
+
+## 10. Chat Management
+
+### Data Flow Diagram
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Kong
+    participant chat-service
+    participant MongoDB
+
+    Client->>Kong: GET /api/chats
+    Kong->>chat-service: /
+    chat-service->>MongoDB: Get all chats
+    MongoDB-->>chat-service: Chat list
+    chat-service-->>Kong: Response
+    Kong-->>Client: Response
+
+    Client->>Kong: GET /api/chats/{chat_id}/messages
+    Kong->>chat-service: /{chat_id}/messages
+    chat-service->>MongoDB: Get messages
+    MongoDB-->>chat-service: Message list
+    chat-service-->>Kong: Response
+    Kong-->>Client: Response
+
+    Client->>Kong: GET /api/chats/{chat_id}/participants
+    Kong->>chat-service: /{chat_id}/participants
+    chat-service->>MongoDB: Get participants
+    MongoDB-->>chat-service: Participant list
+    chat-service-->>Kong: Response
+    Kong-->>Client: Response
+```
+
+### User Story
+
+```mermaid
+graph TD
+    A[User wants to see their chats] --> B{Clicks on chat list};
+    B --> C[System fetches and displays the list of chats];
+    C --> D{User opens a chat};
+    D --> E[System fetches and displays chat messages];
+    E --> F{User wants to see who is in the chat};
+    F --> G[System fetches and displays chat participants];
+```
+```
 ```

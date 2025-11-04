@@ -39,3 +39,24 @@ class Notifications(Resource):
         """Get user notifications."""
         # Logic to get user notifications (requires auth)
         return {"message": "Get notifications endpoint"}, 200
+
+@users_bp.route('/search')
+class SearchUser(Resource):
+    def get(self):
+        """Search for a user."""
+        # Logic to search for a user
+        return {"message": "User search endpoint"}, 200
+
+@users_bp.route('/connect')
+class ConnectUser(Resource):
+    def post(self):
+        """Send a connection request to a user."""
+        # Logic to send a connection request
+        return {"message": "User connect endpoint"}, 200
+
+@users_bp.route('/connections/<int:id>/respond')
+class RespondConnection(Resource):
+    def post(self, id):
+        """Respond to a connection request."""
+        # Logic to respond to a connection request
+        return {"message": f"Respond to connection {id}"}, 200

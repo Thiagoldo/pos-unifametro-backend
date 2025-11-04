@@ -85,3 +85,19 @@ O sistema também suporta outros eventos em tempo real, como notificações, usa
 4.  **Conexão WebSocket:** O cliente se conecta ao `websocket-service` usando o ID da sala para receber mensagens em tempo real.
 
 Este modelo de comunicação assíncrona via RabbitMQ garante que o sistema seja resiliente e escalável, permitindo que os serviços de escrita (como `chat-service`) não precisem se preocupar com a lógica de entrega em tempo real para os clientes.
+
+### 8. Gerenciamento de Perfil de Usuário
+
+1.  **Busca de Perfil:** O cliente envia `GET /api/users/profile` para o **Kong**, que roteia para o `user-service`. O serviço busca o perfil do usuário autenticado no **PostgreSQL** e o retorna.
+2.  **Atualização de Perfil:** O cliente envia `PUT /api/users/profile` com os dados a serem atualizados. O `user-service` atualiza as informações do perfil no **PostgreSQL**.
+
+### 9. Gerenciamento de Notificações
+
+1.  **Busca de Notificações:** O cliente envia `GET /api/users/notifications` para o **Kong**, que roteia para o `user-service`. O serviço busca as notificações do usuário no **PostgreSQL** e as retorna.
+2.  **Criação de Notificação:** O cliente envia `POST /api/users/notifications` com os dados da notificação. O `user-service` cria a notificação no **PostgreSQL** e, se necessário, publica um evento no **RabbitMQ** para notificação em tempo real.
+
+### 10. Gerenciamento de Chats
+
+1.  **Listar Chats:** O cliente envia `GET /api/chats` para o **Kong**, que roteia para o `chat-service`. O serviço busca e retorna a lista de chats do usuário.
+2.  **Obter Mensagens:** O cliente envia `GET /api/chats/{chat_id}/messages` para o **Kong**, que roteia para o `chat-service`. O serviço busca e retorna as mensagens de um chat específico.
+3.  **Obter Participantes:** O cliente envia `GET /api/chats/{chat_id}/participants` para o **Kong**, que roteia para o `chat-service`. O serviço busca e retorna os participantes de um chat específico.
