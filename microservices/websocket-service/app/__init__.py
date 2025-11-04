@@ -10,25 +10,25 @@ import threading
 import logging
 import sys
 
-# Configure logging
+# Configura o logging
 logging.basicConfig(stream=sys.stdout, level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-# Instantiate without config-dependent parameters
+# Instancia sem parâmetros dependentes de configuração
 socketio = SocketIO(cors_allowed_origins="*", async_mode='eventlet')
 
 def create_app():
-    """Construct the core application."""
+    """Cria e configura a aplicação Flask."""
     app = Flask(__name__)
     app.config.from_object(Config)
     app.logger = logger
 
-    # Initialize with app config now that it's loaded
+    # Inicializa com a configuração do app agora que está carregada
     socketio.init_app(app, message_queue=app.config['RABBITMQ_URL'])
 
     from . import events
 
-    # Start RabbitMQ consumer in a background thread
+    # Inicia o consumidor do RabbitMQ em uma thread de fundo
     consumer_thread = threading.Thread(target=start_consumer, args=(socketio, app.config['RABBITMQ_URL']))
     consumer_thread.daemon = True
     consumer_thread.start()

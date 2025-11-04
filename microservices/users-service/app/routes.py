@@ -1,62 +1,62 @@
 from flask_restx import Namespace, Resource
 
-users_bp = Namespace('users', path='/', description='User related operations')
+users_bp = Namespace('users', path='/', description='Operações relacionadas a usuários')
 
 @users_bp.route('/register')
 class RegisterUser(Resource):
     def post(self):
-        """Register a new user."""
-        # Logic to register user with Keycloak and save to DB
-        return {"message": "User registration endpoint"}, 200
+        """Registra um novo usuário."""
+        # Lógica para registrar o usuário no Keycloak e salvar no banco de dados
+        return {"message": "Endpoint de registro de usuário"}, 200
 
 @users_bp.route('/login')
 class LoginUser(Resource):
     def post(self):
-        """Authenticate user and get tokens."""
-        # Logic to authenticate with Keycloak and get tokens
-        return {"message": "User login endpoint"}, 200
+        """Autentica o usuário e obtém tokens."""
+        # Lógica para autenticar com o Keycloak e obter tokens
+        return {"message": "Endpoint de login de usuário"}, 200
 
 @users_bp.route('/profile')
 class UserProfile(Resource):
     def get(self):
-        """Get user profile."""
-        # Logic to get user profile (requires auth)
-        return {"message": "Get user profile endpoint"}, 200
+        """Obtém o perfil do usuário."""
+        # Lógica para obter o perfil do usuário (requer autenticação)
+        return {"message": "Endpoint para obter perfil de usuário"}, 200
 
     def put(self):
-        """Update user profile."""
-        # Logic to update user profile (requires auth)
-        return {"message": "Update user profile endpoint"}, 200
+        """Atualiza o perfil do usuário."""
+        # Lógica para atualizar o perfil do usuário (requer autenticação)
+        return {"message": "Endpoint para atualizar perfil de usuário"}, 200
 
 @users_bp.route('/notifications')
 class Notifications(Resource):
     def post(self):
-        """Create a notification for a user."""
-        # Logic to create a notification for a user
-        return {"message": "Create notification endpoint"}, 200
+        """Cria uma notificação para um usuário."""
+        # Lógica para criar uma notificação para um usuário
+        return {"message": "Endpoint para criar notificação"}, 200
 
     def get(self):
-        """Get user notifications."""
-        # Logic to get user notifications (requires auth)
-        return {"message": "Get notifications endpoint"}, 200
+        """Obtém as notificações do usuário."""
+        # Lógica para obter as notificações do usuário (requer autenticação)
+        return {"message": "Endpoint para obter notificações"}, 200
 
 @users_bp.route('/search')
 class SearchUser(Resource):
     def get(self):
-        """Search for a user."""
-        # Logic to search for a user
-        return {"message": "User search endpoint"}, 200
+        """Busca por um usuário."""
+        # Lógica para buscar por um usuário
+        return {"message": "Endpoint de busca de usuário"}, 200
 
 @users_bp.route('/connect')
 class ConnectUser(Resource):
     def post(self):
-        """Send a connection request to a user."""
-        # Logic to send a connection request
-        return {"message": "User connect endpoint"}, 200
+        """Envia uma solicitação de conexão para um usuário."""
+        # Lógica para enviar uma solicitação de conexão
+        return {"message": "Endpoint para conectar usuário"}, 200
 
 @users_bp.route('/connections/<int:id>/respond')
 class RespondConnection(Resource):
     def post(self, id):
-        """Respond to a connection request."""
-        # Logic to respond to a connection request
-        return {"message": f"Respond to connection {id}"}, 200
+        """Responde a uma solicitação de conexão."""
+        # Lógica para responder a uma solicitação de conexão
+        return {"message": f"Responder à conexão {id}"}, 200

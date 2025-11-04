@@ -1,8 +1,8 @@
-# This file is for business logic, such as interacting with Keycloak.
-# For example, you could have functions here to:
-# - Create a user in Keycloak
-# - Get an authentication token from Keycloak
-# - Validate a token
+# Este arquivo é para a lógica de negócios, como a interação com o Keycloak.
+# Por exemplo, você poderia ter funções aqui para:
+# - Criar um usuário no Keycloak
+# - Obter um token de autenticação do Keycloak
+# - Validar um token
 
 import requests
 
@@ -14,16 +14,16 @@ class KeycloakService:
         self.client_secret = client_secret
 
     def get_admin_token(self):
-        """Get admin token to manage Keycloak."""
+        """Obtém o token de administrador para gerenciar o Keycloak."""
         token_url = f"{self.server_url}/realms/master/protocol/openid-connect/token"
         payload = {
             'client_id': 'admin-cli',
-            'username': 'admin_user', # This should be configured securely
-            'password': 'admin_password', # This should be configured securely
+            'username': 'admin_user', # Isso deve ser configurado de forma segura
+            'password': 'admin_password', # Isso deve ser configurado de forma segura
             'grant_type': 'password'
         }
         response = requests.post(token_url, data=payload)
         response.raise_for_status()
         return response.json()['access_token']
 
-    # Add more methods for user registration, login, etc.
+    # Adicione mais métodos para registro de usuário, login, etc.

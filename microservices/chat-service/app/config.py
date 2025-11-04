@@ -4,8 +4,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class Config:
-    """Set Flask configuration from environment variables."""
+    """Define as configurações do Flask a partir de variáveis de ambiente."""
 
-    # Database
-    # The MONGODB_URL from docker-compose is automatically used by Flask-PyMongo as MONGO_URI
+    # Banco de Dados
+    # A variável MONGODB_URL do docker-compose é usada automaticamente pelo Flask-PyMongo como MONGO_URI
     MONGO_URI = os.getenv("MONGODB_URL")

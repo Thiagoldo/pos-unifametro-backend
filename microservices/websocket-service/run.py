@@ -7,5 +7,5 @@ app, socketio = create_app()
 if __name__ == '__main__':
     host = '0.0.0.0'
     port = 3003
-    print(f"Starting WebSocket server on {host}:{port}")
+    print(f"Iniciando servidor WebSocket em {host}:{port}")
     eventlet.wsgi.server(eventlet.listen((host, port)), app)
