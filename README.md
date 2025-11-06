@@ -60,13 +60,28 @@ O projeto é composto pelos seguintes serviços:
 ├── docker
 │   └── docker-compose.yaml
 ├── kong
-│   └── kong.yaml
+│   ├── config
+│   │   └── kong.yaml
+│   └── docker
+│       └── Dockerfile
 ├── microservices
 │   ├── chat-service
+│   │   ├── docker
+│   │   │   └── Dockerfile
+│   │   └── src
 │   ├── users-service
+│   │   ├── docker
+│   │   │   └── Dockerfile
+│   │   └── src
 │   └── websocket-service
+│       ├── docker
+│       │   └── Dockerfile
+│       └── src
 ├── nginx
-│   └── nginx.conf
+│   ├── config
+│   │   └── nginx.conf
+│   └── docker
+│       └── Dockerfile
 ├── public
 │   ├── arquitetura-sistema.jpeg
 │   └── fala-blau.jpeg
@@ -126,8 +141,8 @@ As rotas da API são gerenciadas pelo Kong API Gateway.
 
 Para mais detalhes sobre os endpoints de cada serviço, consulte a documentação Swagger UI de cada um:
 
-- **User Service Docs**: `http://localhost:3001/doc`
-- **Chat Service Docs**: `http://localhost:3002/doc`
+- **User Service Docs**: `http://localhost/api/chats/doc`
+- **Chat Service Docs**: `http://localhost/api/chats/doc`
 - **WebSocket Service AsyncAPI**: `http://localhost:3003/asyncapi` (Exposto pelo `asyncapi.yaml`)
 
 ## 🏛️ Áreas Administrativas
