@@ -31,7 +31,8 @@ Um sistema de chat em tempo real construído com arquitetura de microsserviços,
 
 O projeto é composto pelos seguintes serviços:
 
-- **nginx**: Atua como um proxy reverso para os outros serviços.
+- **nginx**: Atua como um proxy reverso para os outros serviços e serve o frontend.
+- **frontend**: Aplicação web construída com React, TypeScript e Tailwind CSS.
 - **kong**: API Gateway para gerenciar as rotas e o acesso aos microsserviços.
 - **keycloak**: Lida com a autenticação e autorização de usuários.
 - **user-service**: Microsserviço para gerenciar usuários, perfis e contatos.
@@ -43,6 +44,7 @@ O projeto é composto pelos seguintes serviços:
 
 ## 🛠️ Tecnologias Utilizadas
 
+- **Frontend**: React, TypeScript, Tailwind CSS
 - **Backend**: Python, Flask, Flask-RESTX, Flask-SocketIO
 - **Banco de Dados**: PostgreSQL, MongoDB
 - **Mensageria**: RabbitMQ
@@ -59,6 +61,21 @@ O projeto é composto pelos seguintes serviços:
 .
 ├── docker
 │   └── docker-compose.yaml
+├── frontend
+│   ├── public
+│   │   └── index.html
+│   ├── src
+│   │   ├── components
+│   │   │   ├── Chat.tsx
+│   │   │   └── Login.tsx
+│   │   ├── App.tsx
+│   │   ├── index.css
+│   │   ├── index.tsx
+│   │   └── reportWebVitals.ts
+│   ├── .env.example
+│   ├── package.json
+│   ├── tsconfig.json
+│   └── Dockerfile
 ├── kong
 │   ├── config
 │   │   └── kong.yaml
@@ -102,13 +119,13 @@ O projeto é composto pelos seguintes serviços:
 
    ```bash
    git clone <repository-url>
-   cd pos-unifametro-backend/docker
+   cd pos-unifametro-backend
    ```
 
-2. **Inicie os serviços:**
+2. **Inicie os serviços (incluindo o frontend):**
 
    ```bash
-   docker-compose up -d --build
+   docker-compose -f docker/docker-compose.yaml up -d --build
    ```
 
 A aplicação estará disponível em `http://localhost`.
@@ -124,6 +141,7 @@ Para mais detalhes sobre a arquitetura e o fluxo de dados do sistema, consulte o
 
 | Serviço             | Porta      | Descrição                                      |
 | ------------------- | ---------- | ---------------------------------------------- |
+| **Frontend**        | 80         | Aplicação web (servida pelo Nginx)             |
 | **nginx**           | 80         | Proxy reverso para todos os serviços           |
 | **kong**            | 8000       | API Gateway                                    |
 | **keycloak**        | 8080       | Servidor de autenticação                       |
