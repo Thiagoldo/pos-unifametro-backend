@@ -1,7 +1,7 @@
 import eventlet
 eventlet.monkey_patch()
 
-from flask import Flask
+from flask import Flask, send_from_directory
 from flask_socketio import SocketIO
 import os
 from .config import Config
@@ -27,6 +27,10 @@ def create_app():
     socketio.init_app(app, message_queue=app.config['RABBITMQ_URL'])
 
     from . import events
+
+    @app.route('/asyncapi')
+    def serve_asyncapi():
+        return send_from_directory(os.path.abspath(os.path.dirname('run.py')), 'asyncapi.yaml')
 
     # Inicia o consumidor do RabbitMQ em uma thread de fundo
     consumer_thread = threading.Thread(target=start_consumer, args=(socketio, app.config['RABBITMQ_URL']))
