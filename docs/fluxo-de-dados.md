@@ -18,7 +18,7 @@ O sistema é baseado em uma arquitetura de microsserviços orquestrada com Docke
     *   **MongoDB:** Usado pelo `chat-service`.
     *   **RabbitMQ:** Usado como um message broker para a comunicação assíncrona entre o `chat-service` e o `websocket-service`.
 
-![Arquitetura do Sistema](public/arquitetura-sistema.jpeg)
+![Arquitetura do Sistema](../public/arquitetura-sistema.jpeg)
 
 ---
 

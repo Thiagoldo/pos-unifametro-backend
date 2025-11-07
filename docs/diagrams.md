@@ -178,6 +178,7 @@ sequenceDiagram
     chat-service-->>Kong: Response with chat ID
     Kong-->>Client: Response with chat ID
     Client->>websocket-service: Connect to chat room
+```
 
 ## 8. User Profile Management
 
@@ -254,6 +255,7 @@ graph TD
     C --> D{A new notification is created by the system};
     D --> E[System saves notification in database];
     E --> F[System sends notification to a queue for real-time update];
+```
 
 ## 10. Chat Management
 
@@ -298,6 +300,4 @@ graph TD
     D --> E[System fetches and displays chat messages];
     E --> F{User wants to see who is in the chat};
     F --> G[System fetches and displays chat participants];
-```
-```
 ```
