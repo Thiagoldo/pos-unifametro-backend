@@ -1,6 +1,6 @@
 # FalaBLAU - Sistema de Chat em Tempo Real
 
-![FalaBLAU Logo](public/fala-blau.jpeg)
+<img src="public/fala-blau.jpeg" alt="FalaBLAU Logo" width="250"/>
 
 Um sistema de chat em tempo real construído com arquitetura de microsserviços, utilizando Flask para o backend, e totalmente containerizado com Docker.
 
