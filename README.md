@@ -23,6 +23,7 @@ Este projeto, denominado FalaBLAU, foi desenvolvido como trabalho de conclusão 
 - [API Endpoints](#-api-endpoints)
 - [Áreas Administrativas](#-áreas-administrativas)
 - [Histórico de Alterações](#-histórico-de-alterações)
+- [Autores](#-autores)
 - [Licença](#-licença)
 
 ## ✨ Funcionalidades
@@ -198,3 +199,11 @@ Consulte o CHANGELOG.md para ver as mudanças notáveis em cada versão do proje
 ## ⚖️️ Licença
 
 Este projeto está licenciado sob a Licença MIT.
+
+## 👥 Autores
+
+Este projeto foi desenvolvido por:
+
+- **Jefferson Sant'ana Galvão** - [@hudjinn](https://github.com/hudjinn)
+- **Victor Adler** - [@victoradler](https://github.com/victoradler)
+- **Thiago Lima** - [@Thiagoldo](https://github.com/Thiagoldo)
