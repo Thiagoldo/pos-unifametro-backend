@@ -10,7 +10,6 @@ Um sistema de chat em tempo real construído com arquitetura de microsserviços,
 
 Este projeto, denominado FalaBLAU, foi desenvolvido como trabalho de conclusão de curso (TCC) de pós-graduação. Ele visa demonstrar a implementação de um sistema de chat em tempo real utilizando uma arquitetura de microsserviços moderna e robusta.
 
-
 ## 📜 Sumário
 
 - [Funcionalidades](#-funcionalidades)
@@ -27,6 +26,7 @@ Este projeto, denominado FalaBLAU, foi desenvolvido como trabalho de conclusão 
 - [Licença](#-licença)
 
 ## ✨ Funcionalidades
+
 O projeto está em desenvolvimento e as seguintes funcionalidades estão planejadas:
 
 - [ ] Autenticação e autorização de usuários com Keycloak.
@@ -142,6 +142,7 @@ O projeto é composto pelos seguintes serviços:
 
 2. **Configure as Variáveis de Ambiente:**
    O projeto utiliza um arquivo `.env` para configurar as variáveis de ambiente. Crie uma cópia do arquivo de exemplo e altere os valores conforme necessário.
+
    ```bash
    cp .env.example .env
    ```
@@ -165,15 +166,18 @@ Para mais detalhes sobre a arquitetura e o fluxo de dados do sistema, consulte o
 
 ## 📊 Serviços e Portas
 
-| Serviço             | Porta      | Descrição                                      |
-| ------------------- | ---------- | ---------------------------------------------- |
-| **Frontend**        | 80         | Aplicação web (servida pelo Nginx)             |
-| **nginx**           | 80         | Proxy reverso para todos os serviços           |
-| **kong**            | 8000       | API Gateway                                    |
-| **keycloak**        | 8080       | Servidor de autenticação                       |
-| **user-service**    | 3001       | Microsserviço de usuários                      |
-| **chat-service**    | 3002       | Microsserviço de chat                          |
-| **websocket-service** | 3003       | Serviço de WebSocket para comunicação real-time|
+| Serviço               | Porta | Descrição                                       |
+| --------------------- | ----- | ----------------------------------------------- |
+| **Frontend**          | 80    | Aplicação web (servida pelo Nginx)              |
+| **nginx**             | 80    | Proxy reverso para todos os serviços            |
+| **kong**              | 8000  | API Gateway                                     |
+| **keycloak**          | 8080  | Servidor de autenticação                        |
+| **user-service**      | 3001  | Microsserviço de usuários                       |
+| **chat-service**      | 3002  | Microsserviço de chat                           |
+| **websocket-service** | 3003  | Serviço de WebSocket para comunicação real-time |
+| **postgresql**        | 5432  | Banco de dados para `user-service`              |
+| **mongodb**           | 27017 | Banco de dados para `chat-service`              |
+| **rabbitmq**          | 15672 | Interface de gerenciamento do RabbitMQ          |
 
 ## 📡 API Endpoints
 
@@ -194,6 +198,7 @@ Para mais detalhes sobre os endpoints de cada serviço, consulte a documentaçã
 Para acessar as áreas administrativas dos serviços, utilize os seguintes endereços:
 
 - **Keycloak**:
+
   - **URL**: `http://localhost/auth/`
   - **Usuário**: `admin`
   - **Senha**: `admin`
