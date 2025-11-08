@@ -1,303 +1,303 @@
-# Diagrams
+# Diagramas
 
-## 1. User Registration and Authentication
+## 1. Registro e Autenticação de Usuário
 
-### Data Flow Diagram
+### Diagrama de Fluxo de Dados
 
 ```mermaid
 sequenceDiagram
-    participant Client
+    participant Cliente
     participant Kong
     participant user-service
     participant Keycloak
     participant PostgreSQL
 
-    Client->>Kong: POST /api/users/register
+    Cliente->>Kong: POST /api/users/register
     Kong->>user-service: /register
-    user-service->>Keycloak: Register user
-    Keycloak-->>user-service: User registered
-    user-service->>PostgreSQL: Save user info
-    PostgreSQL-->>user-service: User saved
-    user-service-->>Kong: Response
-    Kong-->>Client: Response
+    user-service->>Keycloak: Registrar usuário
+    Keycloak-->>user-service: Usuário registrado
+    user-service->>PostgreSQL: Salvar informações do usuário
+    PostgreSQL-->>user-service: Usuário salvo
+    user-service-->>Kong: Resposta
+    Kong-->>Cliente: Resposta
 ```
 
-### User Story
+### História de Usuário
 
 ```mermaid
 graph TD
-    A[User wants to register] --> B{Fills registration form};
-    B --> C[Submits form];
-    C --> D{System creates user in Keycloak};
-    D --> E[System saves user in database];
-    E --> F[User is successfully registered];
+    A[Usuário quer se registrar] --> B{Preenche formulário de registro};
+    B --> C[Envia formulário];
+    C --> D{Sistema cria usuário no Keycloak};
+    D --> E[Sistema salva usuário no banco de dados];
+    E --> F[Usuário é registrado com sucesso];
 ```
 
-## 2. Sending a Chat Message
+## 2. Envio de Mensagem de Chat
 
-### Data Flow Diagram
+### Diagrama de Fluxo de Dados
 
 ```mermaid
 sequenceDiagram
-    participant Client
+    participant Cliente
     participant Kong
     participant chat-service
     participant MongoDB
     participant RabbitMQ
     participant websocket-service
 
-    Client->>Kong: POST /api/chats/{chat_id}/messages
+    Cliente->>Kong: POST /api/chats/{chat_id}/messages
     Kong->>chat-service: /{chat_id}/messages
-    chat-service->>MongoDB: Save message
-    MongoDB-->>chat-service: Message saved
-    chat-service->>RabbitMQ: Publish message to '''chat_messages''' queue
-    RabbitMQ-->>websocket-service: Consume message from queue
-    websocket-service->>Client: Emit '''new_message''' event via WebSocket
+    chat-service->>MongoDB: Salvar mensagem
+    MongoDB-->>chat-service: Mensagem salva
+    chat-service->>RabbitMQ: Publicar mensagem na fila '''chat_messages'''
+    RabbitMQ-->>websocket-service: Consumir mensagem da fila
+    websocket-service->>Cliente: Emitir evento '''new_message''' via WebSocket
 ```
 
-### User Story
+### História de Usuário
 
 ```mermaid
 graph TD
-    A[User wants to send a message] --> B{Types message in chat};
-    B --> C[Clicks send];
-    C --> D{System saves message in database};
-    D --> E[System sends message to queue];
-    E --> F{WebSocket service gets message};
-    F --> G[WebSocket service sends message to chat participants];
-    G --> H[Users in chat receive the message in real-time];
+    A[Usuário quer enviar uma mensagem] --> B{Digita a mensagem no chat};
+    B --> C[Clica em enviar];
+    C --> D{Sistema salva mensagem no banco de dados};
+    D --> E[Sistema envia mensagem para a fila];
+    E --> F{Serviço WebSocket obtém a mensagem};
+    F --> G[Serviço WebSocket envia mensagem para os participantes do chat];
+    G --> H[Usuários no chat recebem a mensagem em tempo real];
 ```
 
-## 3. Real-time Notifications
+## 3. Notificações em Tempo Real
 
-### Data Flow Diagram
+### Diagrama de Fluxo de Dados
 
 ```mermaid
 sequenceDiagram
     participant user-service
     participant RabbitMQ
     participant websocket-service
-    participant Client
+    participant Cliente
 
-    user-service->>RabbitMQ: Publish notification to '''notifications''' queue
-    RabbitMQ-->>websocket-service: Consume notification from queue
-    websocket-service->>Client: Emit '''new_notification''' event via WebSocket
+    user-service->>RabbitMQ: Publicar notificação na fila '''notifications'''
+    RabbitMQ-->>websocket-service: Consumir notificação da fila
+    websocket-service->>Cliente: Emitir evento '''new_notification''' via WebSocket
 ```
 
-### User Story
+### História de Usuário
 
 ```mermaid
 graph TD
-    A[A new contact is added] --> B{user-service sends a notification event};
-    B --> C[Event is published to a queue];
-    C --> D{WebSocket service gets the event};
-    D --> E[WebSocket service sends notification to the user];
-    E --> F[User receives a real-time notification];
+    A[Um novo contato é adicionado] --> B{user-service envia um evento de notificação};
+    B --> C[Evento é publicado em uma fila];
+    C --> D{Serviço WebSocket obtém o evento};
+    D --> E[Serviço WebSocket envia notificação para o usuário];
+    E --> F[Usuário recebe uma notificação em tempo real];
 ```
 
-## 4. User Login
+## 4. Login de Usuário
 
-### Data Flow Diagram
+### Diagrama de Fluxo de Dados
 
 ```mermaid
 sequenceDiagram
-    participant Client
+    participant Cliente
     participant Kong
     participant user-service
     participant Keycloak
 
-    Client->>Kong: POST /api/users/login
+    Cliente->>Kong: POST /api/users/login
     Kong->>user-service: /login
-    user-service->>Keycloak: Validate credentials
-    Keycloak-->>user-service: Access token
-    user-service-->>Kong: Response with token
-    Kong-->>Client: Response with token
+    user-service->>Keycloak: Validar credenciais
+    Keycloak-->>user-service: Token de acesso
+    user-service-->>Kong: Resposta com token
+    Kong-->>Cliente: Resposta com token
 ```
 
-## 5. Search and Connect with User
+## 5. Pesquisar e Conectar com Usuário
 
-### Data Flow Diagram
+### Diagrama de Fluxo de Dados
 
 ```mermaid
 sequenceDiagram
-    participant Client
+    participant Cliente
     participant Kong
     participant user-service
     participant PostgreSQL
     participant RabbitMQ
 
-    Client->>Kong: GET /api/users/search?query={query}
+    Cliente->>Kong: GET /api/users/search?query={query}
     Kong->>user-service: /search?query={query}
-    user-service->>PostgreSQL: Search user
-    PostgreSQL-->>user-service: User list
-    user-service-->>Kong: Response
-    Kong-->>Client: Response
+    user-service->>PostgreSQL: Pesquisar usuário
+    PostgreSQL-->>user-service: Lista de usuários
+    user-service-->>Kong: Resposta
+    Kong-->>Cliente: Resposta
 
-    Client->>Kong: POST /api/users/connect
+    Cliente->>Kong: POST /api/users/connect
     Kong->>user-service: /connect
-    user-service->>PostgreSQL: Create connection request
-    PostgreSQL-->>user-service: Request created
-    user-service->>RabbitMQ: Publish to '''notifications''' queue
+    user-service->>PostgreSQL: Criar solicitação de conexão
+    PostgreSQL-->>user-service: Solicitação criada
+    user-service->>RabbitMQ: Publicar na fila '''notifications'''
 ```
 
-## 6. Connection Request Notification
+## 6. Notificação de Solicitação de Conexão
 
-### Data Flow Diagram
+### Diagrama de Fluxo de Dados
 
 ```mermaid
 sequenceDiagram
     participant websocket-service
-    participant Client
+    participant Cliente
     participant Kong
     participant user-service
     participant PostgreSQL
 
-    websocket-service->>Client: Emit '''new_connection_request'''
-    Client->>Kong: POST /api/users/connections/{id}/respond
+    websocket-service->>Cliente: Emitir '''new_connection_request'''
+    Cliente->>Kong: POST /api/users/connections/{id}/respond
     Kong->>user-service: /connections/{id}/respond
-    user-service->>PostgreSQL: Update connection status
-    PostgreSQL-->>user-service: Status updated
+    user-service->>PostgreSQL: Atualizar status da conexão
+    PostgreSQL-->>user-service: Status atualizado
 ```
 
-## 7. Start a Chat
+## 7. Iniciar um Chat
 
-### Data Flow Diagram
+### Diagrama de Fluxo de Dados
 
 ```mermaid
 sequenceDiagram
-    participant Client
+    participant Cliente
     participant Kong
     participant chat-service
     participant MongoDB
     participant websocket-service
 
-    Client->>Kong: POST /api/chats
+    Cliente->>Kong: POST /api/chats
     Kong->>chat-service: /chats
-    chat-service->>MongoDB: Create chat room
-    MongoDB-->>chat-service: Chat room created
-    chat-service-->>Kong: Response with chat ID
-    Kong-->>Client: Response with chat ID
-    Client->>websocket-service: Connect to chat room
+    chat-service->>MongoDB: Criar sala de chat
+    MongoDB-->>chat-service: Sala de chat criada
+    chat-service-->>Kong: Resposta com ID do chat
+    Kong-->>Cliente: Resposta com ID do chat
+    Cliente->>websocket-service: Conectar à sala de chat
 ```
 
-## 8. User Profile Management
+## 8. Gerenciamento de Perfil de Usuário
 
-### Data Flow Diagram
+### Diagrama de Fluxo de Dados
 
 ```mermaid
 sequenceDiagram
-    participant Client
+    participant Cliente
     participant Kong
     participant user-service
     participant PostgreSQL
 
-    Client->>Kong: GET /api/users/profile
+    Cliente->>Kong: GET /api/users/profile
     Kong->>user-service: /profile
-    user-service->>PostgreSQL: Get user profile
-    PostgreSQL-->>user-service: User profile
-    user-service-->>Kong: Response
-    Kong-->>Client: Response
+    user-service->>PostgreSQL: Obter perfil do usuário
+    PostgreSQL-->>user-service: Perfil do usuário
+    user-service-->>Kong: Resposta
+    Kong-->>Cliente: Resposta
 
-    Client->>Kong: PUT /api/users/profile
+    Cliente->>Kong: PUT /api/users/profile
     Kong->>user-service: /profile
-    user-service->>PostgreSQL: Update user profile
-    PostgreSQL-->>user-service: Profile updated
-    user-service-->>Kong: Response
-    Kong-->>Client: Response
+    user-service->>PostgreSQL: Atualizar perfil do usuário
+    PostgreSQL-->>user-service: Perfil atualizado
+    user-service-->>Kong: Resposta
+    Kong-->>Cliente: Resposta
 ```
 
-### User Story
+### História de Usuário
 
 ```mermaid
 graph TD
-    A[User wants to view their profile] --> B{Clicks on profile page};
-    B --> C[System fetches and displays user profile];
-    C --> D{User wants to update their profile};
-    D --> E[User edits profile information];
-    E --> F[Submits changes];
-    F --> G[System updates profile in database];
+    A[Usuário quer ver seu perfil] --> B{Clica na página de perfil};
+    B --> C[Sistema busca e exibe o perfil do usuário];
+    C --> D{Usuário quer atualizar seu perfil};
+    D --> E[Usuário edita as informações do perfil];
+    E --> F[Envia as alterações];
+    F --> G[Sistema atualiza o perfil no banco de dados];
 ```
 
-## 9. Notification Management
+## 9. Gerenciamento de Notificações
 
-### Data Flow Diagram
+### Diagrama de Fluxo de Dados
 
 ```mermaid
 sequenceDiagram
-    participant Client
+    participant Cliente
     participant Kong
     participant user-service
     participant PostgreSQL
     participant RabbitMQ
 
-    Client->>Kong: GET /api/users/notifications
+    Cliente->>Kong: GET /api/users/notifications
     Kong->>user-service: /notifications
-    user-service->>PostgreSQL: Get notifications
-    PostgreSQL-->>user-service: Notification list
-    user-service-->>Kong: Response
-    Kong-->>Client: Response
+    user-service->>PostgreSQL: Obter notificações
+    PostgreSQL-->>user-service: Lista de notificações
+    user-service-->>Kong: Resposta
+    Kong-->>Cliente: Resposta
 
-    Client->>Kong: POST /api/users/notifications
+    Cliente->>Kong: POST /api/users/notifications
     Kong->>user-service: /notifications
-    user-service->>PostgreSQL: Create notification
-    PostgreSQL-->>user-service: Notification created
-    user-service->>RabbitMQ: Publish to '''notifications''' queue
-    user-service-->>Kong: Response
-    Kong-->>Client: Response
+    user-service->>PostgreSQL: Criar notificação
+    PostgreSQL-->>user-service: Notificação criada
+    user-service->>RabbitMQ: Publicar na fila '''notifications'''
+    user-service-->>Kong: Resposta
+    Kong-->>Cliente: Resposta
 ```
 
-### User Story
+### História de Usuário
 
 ```mermaid
 graph TD
-    A[User wants to see their notifications] --> B{Clicks on notifications icon};
-    B --> C[System fetches and displays notifications];
-    C --> D{A new notification is created by the system};
-    D --> E[System saves notification in database];
-    E --> F[System sends notification to a queue for real-time update];
+    A[Usuário quer ver suas notificações] --> B{Clica no ícone de notificações};
+    B --> C[Sistema busca e exibe as notificações];
+    C --> D{Uma nova notificação é criada pelo sistema};
+    D --> E[Sistema salva notificação no banco de dados];
+    E --> F[Sistema envia notificação para uma fila para atualização em tempo real];
 ```
 
-## 10. Chat Management
+## 10. Gerenciamento de Chat
 
-### Data Flow Diagram
+### Diagrama de Fluxo de Dados
 
 ```mermaid
 sequenceDiagram
-    participant Client
+    participant Cliente
     participant Kong
     participant chat-service
     participant MongoDB
 
-    Client->>Kong: GET /api/chats
+    Cliente->>Kong: GET /api/chats
     Kong->>chat-service: /
-    chat-service->>MongoDB: Get all chats
-    MongoDB-->>chat-service: Chat list
-    chat-service-->>Kong: Response
-    Kong-->>Client: Response
+    chat-service->>MongoDB: Obter todos os chats
+    MongoDB-->>chat-service: Lista de chats
+    chat-service-->>Kong: Resposta
+    Kong-->>Cliente: Resposta
 
-    Client->>Kong: GET /api/chats/{chat_id}/messages
+    Cliente->>Kong: GET /api/chats/{chat_id}/messages
     Kong->>chat-service: /{chat_id}/messages
-    chat-service->>MongoDB: Get messages
-    MongoDB-->>chat-service: Message list
-    chat-service-->>Kong: Response
-    Kong-->>Client: Response
+    chat-service->>MongoDB: Obter mensagens
+    MongoDB-->>chat-service: Lista de mensagens
+    chat-service-->>Kong: Resposta
+    Kong-->>Cliente: Resposta
 
-    Client->>Kong: GET /api/chats/{chat_id}/participants
+    Cliente->>Kong: GET /api/chats/{chat_id}/participants
     Kong->>chat-service: /{chat_id}/participants
-    chat-service->>MongoDB: Get participants
-    MongoDB-->>chat-service: Participant list
-    chat-service-->>Kong: Response
-    Kong-->>Client: Response
+    chat-service->>MongoDB: Obter participantes
+    MongoDB-->>chat-service: Lista de participantes
+    chat-service-->>Kong: Resposta
+    Kong-->>Cliente: Resposta
 ```
 
-### User Story
+### História de Usuário
 
 ```mermaid
 graph TD
-    A[User wants to see their chats] --> B{Clicks on chat list};
-    B --> C[System fetches and displays the list of chats];
-    C --> D{User opens a chat};
-    D --> E[System fetches and displays chat messages];
-    E --> F{User wants to see who is in the chat};
-    F --> G[System fetches and displays chat participants];
+    A[Usuário quer ver seus chats] --> B{Clica na lista de chats};
+    B --> C[Sistema busca e exibe a lista de chats];
+    C --> D{Usuário abre um chat};
+    D --> E[Sistema busca e exibe as mensagens do chat];
+    E --> F{Usuário quer ver quem está no chat};
+    F --> G[Sistema busca e exibe os participantes do chat];
 ```
