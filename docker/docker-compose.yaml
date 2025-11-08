@@ -7,12 +7,15 @@ services:
     container_name: nginx
     ports:
       - "80:80"
+    volumes:
+      - ../observability/logs:/var/log/nginx
     depends_on:
       - kong
       - keycloak
       - rabbitmq
     networks:
       - frontend-network
+      - observability-network
     restart: always
 
   kong:
@@ -60,6 +63,8 @@ services:
         condition: service_healthy
     env_file:
       - ../.env
+    volumes:
+      - ../observability/logs/user-service:/app/logs
     networks:
       - backend-network
       - data-network
@@ -76,6 +81,8 @@ services:
       - mongodb
     env_file:
       - ../.env
+    volumes:
+      - ../observability/logs/chat-service:/app/logs
     networks:
       - backend-network
       - data-network
@@ -111,6 +118,8 @@ services:
         condition: service_healthy
     env_file:
       - ../.env
+    volumes:
+      - ../observability/logs/websocket-service:/app/logs
     networks:
       - backend-network
       - data-network
@@ -147,11 +156,51 @@ services:
       - data-network
     restart: always
 
+  loki:
+    image: grafana/loki:2.9.0
+    container_name: loki
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - observability-network
+    restart: always
+
+  promtail:
+    image: grafana/promtail:2.9.0
+    container_name: promtail
+    volumes:
+      - ../observability/promtail/config.yml:/etc/promtail/config.yml
+      - ../observability/logs:/var/log/services
+    networks:
+      - observability-network
+    restart: always
+    depends_on:
+      - loki
+      - nginx
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-storage:/var/lib/grafana
+    env_file:
+      - ../.env
+    networks:
+      - observability-network
+    depends_on:
+      - loki
+    restart: always
+
 networks:
   frontend-network:
   backend-network:
   data-network:
+  observability-network:
 
 volumes:
   postgres-data:
   mongo-data:
+  grafana-storage:
