@@ -1,0 +1,18 @@
+services:
+  nginx:
+    image: fala-blau-nginx:latest
+    build:
+      context: ..
+      dockerfile: ./nginx/docker/Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - ../observability/logs/nginx:/var/log/nginx
+    depends_on:
+      - kong
+      - keycloak
+      - rabbitmq
+    networks:
+      - frontend-network
+      - observability-network
+    restart: always

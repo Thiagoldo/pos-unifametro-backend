@@ -1,0 +1,166 @@
+asyncapi: 3.0.0
+info:
+  title: WebSocket Service API
+  version: 1.0.0
+  description: >-
+    This service is responsible for handling real-time communication via
+    WebSockets.
+servers:
+  production:
+    host: 'localhost:3003'
+    protocol: ws
+channels:
+  /connection:
+    address: /connection
+    messages:
+      publish.message:
+        $ref: '#/components/messages/Status'
+      subscribe.message:
+        $ref: '#/components/messages/Status'
+  /chat:
+    address: /chat
+    messages:
+      publish.message.0:
+        $ref: '#/components/messages/JoinLeaveChat'
+      publish.message.1:
+        $ref: '#/components/messages/SendMessage'
+      subscribe.message.0:
+        $ref: '#/components/messages/NewMessage'
+      subscribe.message.1:
+        $ref: '#/components/messages/Status'
+  /typing:
+    address: /typing
+    messages:
+      publish.message:
+        $ref: '#/components/messages/Typing'
+      subscribe.message:
+        $ref: '#/components/messages/Typing'
+  /new_message:
+    address: /new_message
+    messages:
+      subscribe.message:
+        $ref: '#/components/messages/NewMessage'
+operations:
+  /connection.publish:
+    action: receive
+    channel:
+      $ref: '#/channels/~1connection'
+    summary: Connect to the service
+    messages:
+      - $ref: '#/channels/~1connection/messages/publish.message'
+  /connection.subscribe:
+    action: send
+    channel:
+      $ref: '#/channels/~1connection'
+    summary: Receive status updates about the connection
+    messages:
+      - $ref: '#/channels/~1connection/messages/subscribe.message'
+  /chat.publish:
+    action: receive
+    channel:
+      $ref: '#/channels/~1chat'
+    summary: 'Join, leave a chat or send a message'
+    messages:
+      - $ref: '#/channels/~1chat/messages/publish.message.0'
+      - $ref: '#/channels/~1chat/messages/publish.message.1'
+  /chat.subscribe:
+    action: send
+    channel:
+      $ref: '#/channels/~1chat'
+    summary: Receive new messages and status updates from a chat
+    messages:
+      - $ref: '#/channels/~1chat/messages/subscribe.message.0'
+      - $ref: '#/channels/~1chat/messages/subscribe.message.1'
+  /typing.publish:
+    action: receive
+    channel:
+      $ref: '#/channels/~1typing'
+    summary: Send typing status to a chat
+    messages:
+      - $ref: '#/channels/~1typing/messages/publish.message'
+  /typing.subscribe:
+    action: send
+    channel:
+      $ref: '#/channels/~1typing'
+    summary: Receive typing status from other users in a chat
+    messages:
+      - $ref: '#/channels/~1typing/messages/subscribe.message'
+  /new_message.subscribe:
+    action: send
+    channel:
+      $ref: '#/channels/~1new_message'
+    summary: Receive a new message
+    messages:
+      - $ref: '#/channels/~1new_message/messages/subscribe.message'
+components:
+  messages:
+    Status:
+      payload:
+        type: object
+        properties:
+          msg:
+            type: string
+            description: A status message.
+    JoinLeaveChat:
+      payload:
+        type: object
+        properties:
+          chat_id:
+            type: string
+            description: The ID of the chat to join or leave.
+    SendMessage:
+      payload:
+        type: object
+        properties:
+          chat_id:
+            type: string
+            description: The ID of the chat to send the message to.
+          text:
+            type: string
+            description: The content of the message.
+          user_id:
+            type: string
+            description: The ID of the user sending the message.
+    NewMessage:
+      payload:
+        type: object
+        properties:
+          chat_id:
+            type: string
+          text:
+            type: string
+          user_id:
+            type: string
+    Typing:
+      payload:
+        type: object
+        properties:
+          chat_id:
+            type: string
+            description: The ID of the chat where the user is typing.
+          user_id:
+            type: string
+            description: The ID of the user who is typing.
+    ChatMessage:
+      payload:
+        type: object
+        properties:
+          room:
+            type: string
+            description: The room (chat_id) to which the message should be sent.
+    UserPresence:
+      payload:
+        type: object
+        properties:
+          room:
+            type: string
+            description: >-
+              The room (e.g., user_id) to which the presence update should be
+              sent.
+    Notification:
+      payload:
+        type: object
+        properties:
+          room:
+            type: string
+            description: 'The room (e.g., user_id) to which the notification should be sent.'

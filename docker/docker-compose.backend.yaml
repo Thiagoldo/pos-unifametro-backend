@@ -1,0 +1,54 @@
+services:
+  user-service:
+    image: fala-blau-users-api:latest
+    build:
+      context: ../microservices/users-service
+      dockerfile: ./docker/Dockerfile
+    ports:
+      - "3001:3001"
+    depends_on:
+      postgresql:
+        condition: service_healthy
+    env_file:
+      - ../.env
+    volumes:
+      - ../observability/logs/user-service:/app/logs
+    networks:
+      - backend-network
+      - data-network
+
+  chat-service:
+    image: fala-blau-chats-api:latest
+    build:
+      context: ../microservices/chat-service
+      dockerfile: ./docker/Dockerfile
+    ports:
+      - "3002:3002"
+    depends_on:
+      - mongodb
+    env_file:
+      - ../.env
+    volumes:
+      - ../observability/logs/chat-service:/app/logs
+    networks:
+      - backend-network
+      - data-network
+
+
+  websocket-service:
+    image: fala-blau-socketio-api:latest
+    build:
+      context: ../microservices/websocket-service
+      dockerfile: ./docker/Dockerfile
+    ports:
+      - "3003:3003"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    env_file:
+      - ../.env
+    volumes:
+      - ../observability/logs/websocket-service:/app/logs
+    networks:
+      - backend-network
+      - data-network

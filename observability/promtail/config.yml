@@ -1,0 +1,39 @@
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  - url: http://loki:3100/loki/api/v1/push
+
+scrape_configs:
+  - job_name: nginx
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: nginx-logs
+          __path__: /var/log/services/nginx/*.log
+  - job_name: user-service
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: user-service-logs
+          __path__: /var/log/services/user-service/*.log
+  - job_name: chat-service
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: chat-service-logs
+          __path__: /var/log/services/chat-service/*.log
+  - job_name: websocket-service
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: websocket-service-logs
+          __path__: /var/log/services/websocket-service/*.log

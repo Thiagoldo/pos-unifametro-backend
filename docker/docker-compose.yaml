@@ -1,0 +1,83 @@
+services:
+  nginx:
+    extends:
+      file: docker-compose.frontend.yaml
+      service: nginx
+    container_name: nginx
+
+  kong:
+    extends:
+      file: docker-compose.gateway.yaml
+      service: kong
+    container_name: kong
+
+  user-service:
+    extends:
+      file: docker-compose.backend.yaml
+      service: user-service
+    container_name: api-users
+  
+  chat-service:
+    extends:
+      file: docker-compose.backend.yaml
+      service: chat-service
+    container_name: api-chats
+
+  websocket-service:
+    extends:
+      file: docker-compose.backend.yaml
+      service: websocket-service
+    container_name: api-socketio
+
+  postgresql:
+    extends:
+      file: docker-compose.database.yaml
+      service: postgresql
+    container_name: postgres
+
+  mongodb:
+    extends:
+      file: docker-compose.database.yaml
+      service: mongodb
+    container_name: mongodb
+  
+  keycloak:
+    extends:
+      file: docker-compose.keycloak.yaml
+      service: keycloak
+    container_name: keycloak
+
+  rabbitmq:
+    extends:
+      file: docker-compose.rabbitmq.yaml
+      service: rabbitmq
+    container_name: rabbitmq
+
+  grafana:
+    extends:
+      file: docker-compose.observability.yaml
+      service: grafana
+    container_name: grafana
+
+  loki:
+    extends:
+      file: docker-compose.observability.yaml
+      service: loki
+    container_name: loki
+
+  promtail:
+    extends:
+      file: docker-compose.observability.yaml
+      service: promtail
+    container_name: promtail
+
+networks:
+  frontend-network:
+  backend-network:
+  data-network:
+  observability-network:
+
+volumes:
+  postgres-data:
+  mongo-data:
+  grafana-storage:

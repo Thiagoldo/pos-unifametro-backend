@@ -1,0 +1,37 @@
+_format_version: "2.1"
+
+services:
+- name: user-service
+  url: http://user-service:3001
+  routes:
+  - name: user-routes
+    paths:
+    - /api/users
+    strip_path: true
+
+- name: chat-service
+  url: http://chat-service:3002
+  routes:
+  - name: chat-routes
+    paths:
+    - /api/chats
+    strip_path: true
+
+- name: websocket-service
+  url: http://websocket-service:3003
+  routes:
+  - name: websocket-routes
+    paths:
+    - /socket.io
+    strip_path: false
+  plugins:
+  - name: cors
+    config:
+      origins:
+      - "*"
+      methods:
+      - GET
+      - POST
+      headers:
+      - Content-Type
+      credentials: true

@@ -1,0 +1,14 @@
+services:
+  rabbitmq:
+    image: rabbitmq:4.2.0-management-alpine
+    ports:
+      - "15672:15672"
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_running"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - frontend-network
+      - data-network
+    restart: always

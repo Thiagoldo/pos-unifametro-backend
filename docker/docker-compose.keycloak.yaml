@@ -1,0 +1,14 @@
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.4.2
+    ports:
+      - "8080:8080"
+    depends_on:
+      - user-service
+    env_file:
+      - ../.env
+    command: ["start", "--proxy-headers", "forwarded"]
+    networks:
+      - frontend-network
+      - backend-network
+    restart: always

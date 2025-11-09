@@ -1,92 +1,135 @@
-# FalaBLAU - Sistema FullStack para Conversas em Tempo Real
+# FalaBLAU - Sistema de Chat em Tempo Real
 
-![FalaBLAU Logo](public/fala-blau.jpeg)
+<img src="public/fala-blau.jpeg" alt="FalaBLAU Logo" width="250"/>
 
-Um sistema de chat em tempo real construído com arquitetura de microsserviços avançada, utilizando Flask (backend), React (frontend), com API Gateway, sistema de mensageria e autenticação centralizada, totalmente containerizado com Docker.
+Um sistema de chat em tempo real construído com arquitetura de microsserviços, utilizando Flask para o backend, e totalmente containerizado com Docker.
 
 ![Arquitetura do Sistema](public/arquitetura-sistema.jpeg)
 
-> 📖 **Documentação Detalhada**: Para uma visão aprofundada da arquitetura, fluxos de dados e padrões implementados, consulte a [Documentação de Arquitetura Detalhada](docs/arquitetura-detalhada.md).
+## 📚 Sobre o Projeto
+
+Este projeto, denominado FalaBLAU, foi desenvolvido como trabalho de conclusão de curso (TCC) de pós-graduação. Ele visa demonstrar a implementação de um sistema de chat em tempo real utilizando uma arquitetura de microsserviços moderna e robusta.
+
+## 📜 Sumário
+
+- [Funcionalidades](#-funcionalidades)
+- [Melhorias e Próximos Passos](#-melhorias-e-próximos-passos)
+- [Arquitetura](#️-arquitetura)
+- [Tecnologias Utilizadas](#-tecnologias-utilizadas)
+- [Estrutura do Projeto](#-estrutura-do-projeto)
+- [Como Executar](#-como-executar)
+- [Observabilidade](#-observabilidade)
+- [Documentação](#-documentação)
+- [Serviços e Portas](#-serviços-e-portas)
+- [API Endpoints](#-api-endpoints)
+- [Áreas Administrativas](#-áreas-administrativas)
+- [Histórico de Alterações](#-histórico-de-alterações)
+- [Autores](#-autores)
+- [Licença](#-licença)
+
+## ✨ Funcionalidades
+
+O projeto está em desenvolvimento e as seguintes funcionalidades estão planejadas:
+
+- [ ] Autenticação e autorização de usuários com Keycloak.
+- [ ] Gerenciamento de usuários, perfis e contatos.
+- [ ] Criação e gerenciamento de salas de chat.
+- [ ] Envio e recebimento de mensagens em tempo real.
+- [ ] Notificações de mensagens e status de usuário.
+
+## 🎯 Melhorias e Próximos Passos
+
+- **Aprimorar a Observabilidade**:
+  - [ ] Implementar **logging estruturado** (ex: JSON) em todos os microsserviços para facilitar a consulta e análise de logs.
+  - [ ] Integrar o **Prometheus** para coletar métricas de aplicação (ex: latência de requisições, taxas de erro) e de sistema (ex: uso de CPU/memória dos contêineres).
+  - [ ] Desenvolver dashboards no Grafana para monitorar as métricas do Prometheus e configurar alertas para condições críticas.
+  - [ ] Implementar **tracing distribuído** (ex: com Jaeger ou OpenTelemetry) para rastrear requisições através dos múltiplos serviços.
+
+- **Segurança e Qualidade**:
+  - [ ] Aumentar a cobertura de testes (unitários, integração e E2E) para garantir a estabilidade do sistema.
+  - [ ] Configurar um pipeline de **CI/CD** (Integração e Entrega Contínua) para automatizar o build, testes e deploy das aplicações.
+  - [ ] Implementar políticas de segurança mais robustas no API Gateway (Kong), como rate limiting e autenticação refinada.
+
+- **Funcionalidades do Core**:
+  - [ ] Finalizar a implementação das funcionalidades principais do chat, como gerenciamento de contatos, salas privadas e notificações.
+  - [ ] Desenvolver a interface de usuário no frontend para interagir com todas as funcionalidades do backend.
 
 ## 🏗️ Arquitetura
 
-### Camada de Autenticação
+O projeto é composto pelos seguintes serviços:
 
-- **Keycloak**: Servidor de autenticação e autorização centralizado (SSO)
-- **JWT Tokens**: Validação distribuída entre microsserviços
+- **nginx**: Atua como um proxy reverso para os outros serviços e serve o frontend.
+- **frontend**: Aplicação web construída com React, TypeScript e Tailwind CSS.
+- **kong**: API Gateway para gerenciar as rotas e o acesso aos microsserviços.
+- **keycloak**: Lida com a autenticação e autorização de usuários.
+- **user-service**: Microsserviço para gerenciar usuários, perfis e contatos.
+- **chat-service**: Microsserviço para gerenciar as salas de chat e mensagens.
+- **websocket-service**: Lida com a comunicação em tempo real usando WebSockets.
+- **postgresql**: Banco de dados relacional para o `user-service`.
+- **mongodb**: Banco de dados NoSQL para o `chat-service`.
+- **rabbitmq**: Message broker para a comunicação assíncrona entre os serviços.
 
-### API Gateway e Load Balancing
+## 🛠️ Tecnologias Utilizadas
 
-- **Kong API Gateway**: Gateway centralizado para roteamento, rate limiting e políticas
-- **NGINX Load Balancer**: Distribuição de carga e proxy reverso
-
-### Microsserviços Backend
-
-- **Serviço de Autenticação (Python/Flask)**: Integração com Keycloak, gerenciamento de usuários
-- **Serviço de Chat (Python/Flask)**: Chat em tempo real com WebSockets, gerenciamento de salas e mensagens
-
-### Sistema de Mensageria
-
-- **Kafka/RabbitMQ**: Message broker para comunicação assíncrona entre microsserviços
-- **Event-driven Architecture**: Processamento de eventos em tempo real
-
-### Frontend
-
-- **React App (NodeJS)**: Interface client-side com Material-UI para chat em tempo real
-
-### Camada de Dados
-
-- **PostgreSQL**: Banco de dados principal para usuários e configurações
-- **NoSQL (MongoDB/CouchDB)**: Armazenamento otimizado para mensagens de chat
-- **Redis**: Cache, sessões WebSocket e broker de mensagens em tempo real
+- **Frontend**: React, TypeScript, Tailwind CSS
+- **Backend**: Python, Flask, Flask-RESTX, Flask-SocketIO
+- **Banco de Dados**: PostgreSQL, MongoDB
+- **Mensageria**: RabbitMQ
+- **Autenticação**: Keycloak
+- **API Gateway**: Kong
+- **Containerização**: Docker, Docker Compose
+- **Comunicação em Tempo Real**: WebSockets
+- **Servidor WSGI**: Gunicorn, Eventlet
+- **Outros**: Pika (para RabbitMQ), Kombu, Psycopg2, PyMongo
 
 ## 📁 Estrutura do Projeto
 
 ```
-backend/
-├── services/
-│   ├── auth-service/          # Microsserviço de Autenticação
-│   │   ├── app.py            # Aplicação Flask principal
-│   │   ├── keycloak_integration.py # Integração com Keycloak
-│   │   ├── requirements.txt  # Dependências Python
-│   │   ├── Dockerfile       # Container do serviço
-│   │   └── .env.example     # Variáveis de ambiente
-│   └── chat-service/         # Microsserviço de Chat
-│       ├── app.py           # Aplicação Flask com Socket.IO
-│       ├── message_broker.py # Integração com Kafka/RabbitMQ
-│       ├── requirements.txt # Dependências Python
-│       ├── Dockerfile      # Container do serviço
-│       └── .env.example    # Variáveis de ambiente
-├── frontend/                # Aplicação React (NodeJS)
-│   ├── src/
-│   │   ├── components/      # Componentes React
-│   │   ├── services/       # Serviços API
-│   │   └── App.js          # Aplicação principal
+.
+├── docker
+│   └── docker-compose.yaml
+├── frontend
+│   ├── public
+│   │   └── index.html
+│   ├── src
+│   │   ├── components
+│   │   │   ├── Chat.tsx
+│   │   │   └── Login.tsx
+│   │   ├── App.tsx
+│   │   ├── index.css
+│   │   ├── index.tsx
+│   │   └── reportWebVitals.ts
+│   ├── .env.example
 │   ├── package.json
-│   ├── Dockerfile
-│   └── nginx.conf          # Configuração Nginx
-├── infrastructure/          # Configurações de Infraestrutura
-│   ├── kong/               # API Gateway Kong
-│   │   ├── kong.yml        # Configuração do Kong
-│   │   └── plugins/        # Plugins personalizados
-│   ├── keycloak/           # Servidor de Autenticação
-│   │   ├── keycloak.yml    # Configuração do Keycloak
-│   │   └── themes/         # Temas personalizados
-│   ├── kafka/              # Sistema de Mensageria
-│   │   └── kafka.yml       # Configuração do Kafka/RabbitMQ
-│   └── nginx/              # Load Balancer
-│       └── nginx.conf      # Configuração NGINX
-├── databases/              # Configurações de Banco de Dados
-│   ├── postgresql/         # SQL Database (Usuários)
-│   ├── mongodb/           # NoSQL Database (Chat)
-│   └── redis/             # Cache e Sessões
-├── docs/                  # Documentação
-│   ├── arquitetura-sistema.png # Diagrama de arquitetura
-│   ├── api-documentation.md    # Documentação da API
-│   └── deployment-guide.md     # Guia de deployment
-├── docker-compose.yml      # Orquestração completa
-├── docker-compose.dev.yml  # Ambiente de desenvolvimento
-├── docker-compose.prod.yml # Ambiente de produção
+│   ├── tsconfig.json
+│   └── Dockerfile
+├── kong
+│   ├── config
+│   │   └── kong.yaml
+│   └── docker
+│       └── Dockerfile
+├── microservices
+│   ├── chat-service
+│   │   ├── docker
+│   │   │   └── Dockerfile
+│   │   └── src
+│   ├── users-service
+│   │   ├── docker
+│   │   │   └── Dockerfile
+│   │   └── src
+│   └── websocket-service
+│       ├── docker
+│       │   └── Dockerfile
+│       └── src
+├── nginx
+│   ├── config
+│   │   └── nginx.conf
+│   └── docker
+│       └── Dockerfile
+├── public
+│   ├── arquitetura-sistema.jpeg
+│   └── fala-blau.jpeg
+├── index.html
 └── README.md
 ```
 
@@ -96,505 +139,119 @@ backend/
 
 - Docker
 - Docker Compose
-- Git
 
-### Configuração Rápida
+### Configuração e Execução
 
 1. **Clone o repositório:**
 
    ```bash
    git clone <repository-url>
-   cd backend
+   cd <nome-da-pasta-do-projeto>
    ```
 
-2. **Configure as variáveis de ambiente:**
+2. **Configure as Variáveis de Ambiente:**
+   O projeto utiliza um arquivo `.env` para configurar as variáveis de ambiente. Crie uma cópia do arquivo de exemplo e altere os valores conforme necessário.
 
    ```bash
-   # Serviço de Autenticação
-   cp services/auth-service/.env.example services/auth-service/.env
-
-   # Serviço de Chat
-   cp services/chat-service/.env.example services/chat-service/.env
-
-   # Frontend
-   cp frontend/.env.example frontend/.env
+   cp .env.example .env
    ```
 
-3. **Execute o ambiente completo:**
+3. **Inicie os serviços:**
 
    ```bash
-   docker-compose up -d --build
+   docker-compose -f docker/docker-compose.yaml up -d --build
    ```
 
-4. **Acesse a aplicação:**
-   - Frontend: http://localhost:3000
-   - Auth Service: http://localhost:5000
-   - Chat Service: http://localhost:5001
-   - Aplicação completa (via Nginx): http://localhost
+A aplicação estará disponível em `http://localhost`.
 
-### Ambiente de Desenvolvimento (Apenas Backend)
+## 🔭 Observabilidade
 
-Para desenvolvimento focado no backend:
+O projeto utiliza o stack **Grafana + Loki + Promtail** para observabilidade de logs.
 
-```bash
-docker-compose -f docker-compose.dev.yml up -d --build
-```
+- **Promtail**: Coleta os logs dos arquivos gerados por cada serviço.
+- **Loki**: Armazena e indexa os logs coletados.
+- **Grafana**: Permite visualizar, consultar e analisar os logs de forma centralizada.
 
-Para o frontend em modo de desenvolvimento:
+Para acessar a interface do Grafana, utilize os seguintes dados:
 
-```bash
-cd frontend
-npm install
-npm start
-```
+- **URL**: `http://localhost:3000`
+- **Usuário**: `admin`
+- **Senha**: `admin`
+
+Dentro do Grafana, o datasource do Loki já está pré-configurado, permitindo que você explore os logs de todos os serviços utilizando a linguagem de consulta **LogQL**.
+
+## 📄 Documentação
+
+Para mais detalhes sobre a arquitetura e o fluxo de dados do sistema, consulte os seguintes documentos:
+
+- **[Fluxo de Dados](docs/fluxo-de-dados.md)**: Descreve como os dados fluem entre os diferentes microsserviços.
+- **[Diagramas de Arquitetura](docs/diagrams.md)**: Contém diagramas que ilustram a arquitetura do sistema.
+- **[Histórico de Alterações](CHANGELOG.md)**: Detalha todas as mudanças notáveis do projeto.
+- **[Licença](LICENSE)**: Informações sobre a licença de uso do software.
 
 ## 📊 Serviços e Portas
 
-| Serviço                     | Porta      | Descrição                         |
-| --------------------------- | ---------- | --------------------------------- |
-| **Frontend (React/NodeJS)** | 3000       | Interface do usuário              |
-| **NGINX Load Balancer**     | 80/443     | Load balancer e proxy reverso     |
-| **Kong API Gateway**        | 8000/8443  | API Gateway e rate limiting       |
-| **Keycloak**                | 8080       | Servidor de autenticação SSO      |
-| **Auth Service (Flask)**    | 5000       | API de autenticação               |
-| **Chat Service (Flask)**    | 5001       | API de chat e WebSocket           |
-| **Kafka/RabbitMQ**          | 9092/5672  | Sistema de mensageria             |
-| **PostgreSQL**              | 5432       | Banco SQL (usuários)              |
-| **MongoDB/NoSQL**           | 27017      | Banco NoSQL (chat)                |
-| **Redis**                   | 6379       | Cache e sessões                   |
-| **Kong Admin API**          | 8001       | Interface administrativa Kong     |
-| **Keycloak Admin**          | 8080/admin | Interface administrativa Keycloak |
-
-## 🔧 Funcionalidades
-
-### Autenticação
-
-- ✅ Registro de usuários
-- ✅ Login/Logout
-- ✅ Validação JWT
-- ✅ Middleware de autenticação
-
-### Chat em Tempo Real
-
-- ✅ Salas de chat públicas
-- ✅ Mensagens em tempo real (WebSocket)
-- ✅ Indicadores de digitação
-- ✅ Histórico de mensagens
-- ✅ Notificações de entrada/saída de usuários
-
-### Interface
-
-- ✅ Design responsivo com Material-UI
-- ✅ Lista de salas
-- ✅ Área de chat
-- ✅ Indicadores de status (online/offline)
-- ✅ Formulários de login/registro
-
-## 🛠️ Tecnologias Utilizadas
-
-### Backend (Python/Flask)
-
-- **Flask**: Framework web minimalista
-- **Flask-SocketIO**: WebSocket para comunicação em tempo real
-- **Flask-SQLAlchemy**: ORM para banco de dados
-- **Flask-JWT-Extended**: Autenticação JWT
-- **Gunicorn**: Servidor WSGI para produção
-- **Celery**: Processamento assíncrono de tarefas
-
-### Frontend (NodeJS/React)
-
-- **React**: Biblioteca para interfaces
-- **Material-UI**: Componentes de interface
-- **Socket.IO Client**: Cliente WebSocket
-- **Axios**: Cliente HTTP
-- **React Router**: Roteamento
-- **Redux/Context API**: Gerenciamento de estado
-
-### Autenticação e Autorização
-
-- **Keycloak**: Servidor de identidade e acesso
-- **OAuth 2.0/OpenID Connect**: Protocolos de autenticação
-- **JWT**: Tokens de autenticação distribuída
-
-### API Gateway e Load Balancing
-
-- **Kong**: API Gateway com plugins
-- **NGINX**: Load balancer e proxy reverso
-- **Rate Limiting**: Controle de taxa de requisições
-- **Circuit Breaker**: Padrão de resilência
-
-### Sistema de Mensageria
-
-- **Apache Kafka**: Streaming de eventos em tempo real
-- **RabbitMQ**: Message broker AMQP
-- **Event Sourcing**: Arquitetura orientada a eventos
-
-### Banco de Dados
-
-- **PostgreSQL**: Banco relacional (usuários, configurações)
-- **MongoDB**: Banco NoSQL (mensagens de chat)
-- **Redis**: Cache, sessões e pub/sub
-
-### DevOps e Monitoramento
-
-- **Docker**: Containerização
-- **Docker Compose**: Orquestração de containers
-- **Kubernetes**: Orquestração em produção (opcional)
-- **Prometheus**: Métricas e monitoramento
-- **Grafana**: Dashboards e visualização
-- **ELK Stack**: Logs centralizados (Elasticsearch, Logstash, Kibana)
-
-## 🔐 Segurança
-
-### Autenticação e Autorização
-
-- **SSO (Single Sign-On)** via Keycloak
-- **OAuth 2.0 / OpenID Connect** para autenticação distribuída
-- **JWT Tokens** com expiração e refresh tokens
-- **Role-based Access Control (RBAC)** para permissões granulares
-- **Multi-factor Authentication (MFA)** opcional
-
-### API Security
-
-- **API Gateway (Kong)** com rate limiting e throttling
-- **CORS** configurado adequadamente
-- **HTTPS/TLS** obrigatório em produção
-- **API Keys** e authentication headers
-- **Request/Response validation** em todos os endpoints
-
-### Infraestrutura
-
-- **Variáveis de ambiente** para dados sensíveis
-- **Secrets management** com Docker secrets ou Vault
-- **Network segmentation** entre containers
-- **Firewall rules** e security groups
-- **Container security scanning** com Trivy ou similar
-
-### Monitoramento e Auditoria
-
-- **Logging centralizado** de eventos de segurança
-- **Alertas** para tentativas de acesso não autorizado
-- **Audit trails** para rastreabilidade
-- **Health checks** e monitoring contínuo
+| Serviço               | Porta | Descrição                                       |
+| --------------------- | ----- | ----------------------------------------------- |
+| **Frontend**          | 80    | Aplicação web (servida pelo Nginx)              |
+| **nginx**             | 80    | Proxy reverso para todos os serviços            |
+| **kong**              | 8000  | API Gateway                                     |
+| **keycloak**          | 8080  | Servidor de autenticação                        |
+| **grafana**           | 3000  | Interface de visualização de logs e métricas    |
+| **loki**              | 3100  | Armazenamento de logs                           |
+| **user-service**      | 3001  | Microsserviço de usuários                       |
+| **chat-service**      | 3002  | Microsserviço de chat                           |
+| **websocket-service** | 3003  | Serviço de WebSocket para comunicação real-time |
+| **postgresql**        | 5432  | Banco de dados para `user-service`              |
+| **mongodb**           | 27017 | Banco de dados para `chat-service`              |
+| **rabbitmq**          | 15672 | Interface de gerenciamento do RabbitMQ          |
 
 ## 📡 API Endpoints
 
-### Kong API Gateway (porta 8000)
-
-Todos os requests passam pelo API Gateway com autenticação e rate limiting:
-
-```
-/api/v1/auth/*     # Rotas do serviço de autenticação
-/api/v1/chat/*     # Rotas do serviço de chat
-/api/v1/users/*    # Rotas de usuários
-```
-
-### Keycloak Authentication (porta 8080)
-
-```
-/auth/realms/{realm}/protocol/openid-connect/auth    # Authorization endpoint
-/auth/realms/{realm}/protocol/openid-connect/token   # Token endpoint
-/auth/realms/{realm}/protocol/openid-connect/userinfo # User info
-/auth/admin/realms/{realm}/users                     # User management
-```
-
-### Serviço de Autenticação - via Kong (porta 5000)
-
-```
-POST /api/v1/auth/register     # Registro de usuário
-POST /api/v1/auth/login        # Login via Keycloak
-POST /api/v1/auth/logout       # Logout
-POST /api/v1/auth/refresh      # Refresh token
-GET  /api/v1/auth/profile      # Perfil do usuário
-GET  /api/v1/auth/health       # Health check
-```
-
-### Serviço de Chat - via Kong (porta 5001)
-
-```
-GET  /api/v1/chat/rooms                    # Listar salas
-POST /api/v1/chat/rooms                    # Criar sala
-GET  /api/v1/chat/rooms/{id}               # Detalhes da sala
-GET  /api/v1/chat/rooms/{id}/messages      # Histórico de mensagens
-POST /api/v1/chat/rooms/{id}/messages      # Enviar mensagem (REST)
-DELETE /api/v1/chat/rooms/{id}             # Deletar sala
-PUT  /api/v1/chat/rooms/{id}               # Atualizar sala
-GET  /api/v1/chat/health                   # Health check
-```
-
-### WebSocket Events (via Chat Service)
-
-```
-connect              # Conexão autenticada
-disconnect           # Desconexão
-join_room            # Entrar em sala
-leave_room           # Sair da sala
-send_message         # Enviar mensagem em tempo real
-typing               # Indicador de digitação
-user_joined          # Usuário entrou na sala
-user_left            # Usuário saiu da sala
-message_received     # Nova mensagem recebida
-room_updated         # Sala foi atualizada
-```
-
-### Message Broker Events (Kafka/RabbitMQ)
-
-```
-user.registered      # Usuário se registrou
-user.login           # Usuário fez login
-room.created         # Sala foi criada
-room.deleted         # Sala foi deletada
-message.sent         # Mensagem foi enviada
-user.joined.room     # Usuário entrou em sala
-user.left.room       # Usuário saiu da sala
-```
-
-## 🧪 Desenvolvimento
-
-### Executar Testes
-
-```bash
-# Backend
-docker exec -it auth-service python -m pytest
-docker exec -it chat-service python -m pytest
-
-# Frontend
-cd frontend
-npm test
-```
-
-### Logs
-
-```bash
-# Ver logs de todos os serviços
-docker-compose logs -f
-
-# Ver logs de um serviço específico
-docker-compose logs -f auth-service
-docker-compose logs -f chat-service
-```
-
-### Debugging
-
-```bash
-# Acessar container
-docker exec -it auth-service bash
-docker exec -it chat-service bash
-
-# Verificar status dos serviços
-docker-compose ps
-```
-
-## 🚀 Deploy para Produção
-
-### Pré-requisitos de Produção
-
-1. **Configure variáveis de ambiente de produção**
-2. **Setup Kubernetes cluster ou Docker Swarm**
-3. **Configure HTTPS com certificados SSL/TLS**
-4. **Setup backup automatizado dos bancos de dados**
-5. **Configure monitoramento e alertas**
-6. **Setup CI/CD pipeline**
-
-### Ambientes de Deploy
-
-```bash
-# Desenvolvimento
-docker-compose -f docker-compose.dev.yml up -d
-
-# Produção
-docker-compose -f docker-compose.prod.yml up -d
-
-# Kubernetes
-kubectl apply -f k8s/
-```
-
-### Variáveis de Ambiente Importantes
+As rotas da API são gerenciadas pelo Kong API Gateway.
 
-```bash
-# Keycloak
-KEYCLOAK_ADMIN=admin
-KEYCLOAK_ADMIN_PASSWORD=secure-admin-password
-KEYCLOAK_DATABASE_URL=postgresql://keycloak_user:pass@keycloak-db:5432/keycloak
-
-# Kong API Gateway
-KONG_DATABASE=postgres
-KONG_PG_HOST=kong-database
-KONG_PG_USER=kong
-KONG_PG_PASSWORD=kong-password
-KONG_PROXY_ACCESS_LOG=/dev/stdout
-KONG_ADMIN_ACCESS_LOG=/dev/stdout
-
-# Segurança
-JWT_SECRET_KEY=your-production-jwt-secret
-SECRET_KEY=your-production-secret-key
-KEYCLOAK_CLIENT_SECRET=your-keycloak-client-secret
-
-# Bancos de dados
-DATABASE_URL=postgresql://user:pass@postgres-host:5432/chatdb
-MONGODB_URI=mongodb://user:pass@mongo-host:27017/chatdb
-REDIS_URL=redis://redis-host:6379/0
+- **User Service**: `http://localhost/api/users`
+- **Chat Service**: `http://localhost/api/chats`
+- **WebSocket Service**: `ws://localhost/socket.io`
 
-# Message Broker
-KAFKA_BROKERS=kafka1:9092,kafka2:9092,kafka3:9092
-RABBITMQ_URL=amqp://user:pass@rabbitmq-host:5672/
-
-# URLs dos serviços
-KONG_GATEWAY_URL=https://api.yourdomain.com
-KEYCLOAK_URL=https://auth.yourdomain.com
-FRONTEND_URL=https://chat.yourdomain.com
+Para mais detalhes sobre os endpoints de cada serviço, consulte a documentação Swagger UI de cada um:
 
-# Monitoramento
-PROMETHEUS_URL=https://metrics.yourdomain.com
-GRAFANA_URL=https://dashboard.yourdomain.com
-ELASTICSEARCH_URL=https://logs.yourdomain.com
-```
-
-### Setup de Monitoramento
+- **User Service Docs**: `http://localhost/api/chats/doc`
+- **Chat Service Docs**: `http://localhost/api/chats/doc`
+- **WebSocket Service AsyncAPI**: `http://localhost:3003/asyncapi` (Exposto pelo `asyncapi.yaml`)
 
-```yaml
-# docker-compose.monitoring.yml
-version: "3.8"
-services:
-  prometheus:
-    image: prom/prometheus
-    ports:
-      - "9090:9090"
-
-  grafana:
-    image: grafana/grafana
-    ports:
-      - "3001:3000"
-
-  elasticsearch:
-    image: elasticsearch:7.17.0
-    ports:
-      - "9200:9200"
+## 🏛️ Áreas Administrativas
 
-  kibana:
-    image: kibana:7.17.0
-    ports:
-      - "5601:5601"
-```
+Para acessar as áreas administrativas dos serviços, utilize os seguintes endereços:
 
-## 🐛 Troubleshooting
+- **Keycloak**:
 
-### Problemas Comuns
+  - **URL**: `http://localhost/auth/`
+  - **Usuário**: `admin`
+  - **Senha**: `admin`
 
-1. **Erro de conexão do banco:**
+- **RabbitMQ**:
+  - **URL**: `http://localhost/rabbitmq/`
+  - **Usuário**: `guest`
+  - **Senha**: `guest`
 
-   ```bash
-   docker-compose down -v
-   docker-compose up -d --build
-   ```
+- **Grafana**:
+  - **URL**: `http://localhost:3000`
+  - **Usuário**: `admin`
+  - **Senha**: `admin`
 
-2. **WebSocket não conecta:**
+## 📜 Histórico de Alterações
 
-   - Verifique CORS no chat-service
-   - Confirme se o Redis está funcionando
-   - Valide o token JWT
+Consulte o CHANGELOG.md para ver as mudanças notáveis em cada versão do projeto.
 
-3. **Frontend não carrega:**
-   - Verifique se as variáveis de ambiente estão corretas
-   - Confirme se os serviços backend estão rodando
+## ⚖️️ Licença
 
-### Health Checks
+Este projeto está licenciado sob a Licença MIT.
 
-```bash
-# Verificar serviços
-curl http://localhost:5000/health
-curl http://localhost:5001/health
-```
+## 👥 Autores
 
-## 📈 Roadmap e Próximas Funcionalidades
+Este projeto foi desenvolvido por:
 
-### Fase 1 - Funcionalidades Básicas ✅
-
-- [x] Autenticação via Keycloak
-- [x] API Gateway com Kong
-- [x] Chat em tempo real
-- [x] Microsserviços containerizados
-
-### Fase 2 - Funcionalidades Avançadas 🚧
-
-- [ ] **Salas privadas e grupos**
-- [ ] **Mensagens diretas entre usuários**
-- [ ] **Upload de arquivos e imagens**
-- [ ] **Notificações push em tempo real**
-- [ ] **Histórico de mensagens paginado**
-- [ ] **Busca avançada de mensagens**
-
-### Fase 3 - Moderação e Administração 📋
-
-- [ ] **Sistema de moderação de salas**
-- [ ] **Painel administrativo**
-- [ ] **Relatórios de uso e analytics**
-- [ ] **Sistema de permissões granulares**
-- [ ] **Auditoria completa de ações**
-
-### Fase 4 - Experiência do Usuário 🎨
-
-- [ ] **Temas customizáveis (dark/light)**
-- [ ] **Emojis e reações nas mensagens**
-- [ ] **Status de usuário (online/ocupado/ausente)**
-- [ ] **Configurações de notificação**
-- [ ] **Interface mobile responsiva**
-
-### Fase 5 - Integrações e API 🔗
-
-- [ ] **API REST completa para mobile**
-- [ ] **SDK para desenvolvedores**
-- [ ] **Webhooks para integrações**
-- [ ] **Integração com Slack/Discord**
-- [ ] **Bot framework para automação**
-
-### Fase 6 - Performance e Escalabilidade ⚡
-
-- [ ] **Auto-scaling horizontal**
-- [ ] **CDN para arquivos estáticos**
-- [ ] **Database sharding**
-- [ ] **Caching avançado com Redis Cluster**
-- [ ] **WebRTC para chamadas de vídeo/áudio**
-
-### Fase 7 - Segurança Avançada 🔒
-
-- [ ] **End-to-end encryption**
-- [ ] **Audit logs compliance**
-- [ ] **GDPR compliance tools**
-- [ ] **Advanced threat protection**
-- [ ] **Backup e disaster recovery**
-
-## 👥 Equipe FalaBLAU
-
-- **Jefferson Sant'ana Galvão** - Tech Lead & Backend Developer
-- **Victor Cavalcante** - Frontend Developer & UI/UX
-- **Thiago Lima** - DevOps & Infrastructure Engineer
-
----
-
-## 🏆 Sobre o FalaBLAU
-
-O **FalaBLAU** é mais que um sistema de chat - é uma plataforma completa de comunicação em tempo real, desenvolvida com as melhores práticas de arquitetura de software e tecnologias modernas.
-
-### Missão
-
-Conectar pessoas através de uma comunicação instantânea, segura e escalável.
-
-### Visão
-
-Ser referência em sistemas de chat corporativo com arquitetura de microsserviços.
-
-### Valores
-
-- **Inovação**: Sempre utilizando as tecnologias mais avançadas
-- **Qualidade**: Código limpo e bem documentado
-- **Escalabilidade**: Preparado para crescer
-- **Segurança**: Proteção de dados em primeiro lugar
-
----
-
-## 📝 Licença
-
-Este projeto é desenvolvido para fins educacionais como parte da especialização em desenvolvimento fullstack.
-
-**FalaBLAU** © 2025 - Equipe 5 | Pós-Graduação Unifametro
+- **Jefferson Sant'ana Galvão** - [@hudjinn](https://github.com/hudjinn)
+- **Victor Adler** - [@victoradler](https://github.com/victoradler)
+- **Thiago Lima** - [@Thiagoldo](https://github.com/Thiagoldo)
