@@ -5,7 +5,6 @@ import Chat from './components/Chat';
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // This function would be called after a successful login
   const handleLogin = () => {
     setIsLoggedIn(true);
   };

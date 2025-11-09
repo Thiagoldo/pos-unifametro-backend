@@ -12,8 +12,6 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    // Here you would typically call your backend API for login/registration
-    // For now, we'll just simulate a successful login
     console.log('Submitting:', { username, email, password });
     onLogin();
   };

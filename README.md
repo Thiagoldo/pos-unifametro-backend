@@ -40,12 +40,14 @@ O projeto está em desenvolvimento e as seguintes funcionalidades estão planeja
 ## 🎯 Melhorias e Próximos Passos
 
 - **Aprimorar a Observabilidade**:
+
   - [ ] Implementar **logging estruturado** (ex: JSON) em todos os microsserviços para facilitar a consulta e análise de logs.
   - [ ] Integrar o **Prometheus** para coletar métricas de aplicação (ex: latência de requisições, taxas de erro) e de sistema (ex: uso de CPU/memória dos contêineres).
   - [ ] Desenvolver dashboards no Grafana para monitorar as métricas do Prometheus e configurar alertas para condições críticas.
   - [ ] Implementar **tracing distribuído** (ex: com Jaeger ou OpenTelemetry) para rastrear requisições através dos múltiplos serviços.
 
 - **Segurança e Qualidade**:
+
   - [ ] Aumentar a cobertura de testes (unitários, integração e E2E) para garantir a estabilidade do sistema.
   - [ ] Configurar um pipeline de **CI/CD** (Integração e Entrega Contínua) para automatizar o build, testes e deploy das aplicações.
   - [ ] Implementar políticas de segurança mais robustas no API Gateway (Kong), como rate limiting e autenticação refinada.
@@ -90,19 +92,8 @@ O projeto é composto pelos seguintes serviços:
 │   └── docker-compose.yaml
 ├── frontend
 │   ├── public
-│   │   └── index.html
-│   ├── src
-│   │   ├── components
-│   │   │   ├── Chat.tsx
-│   │   │   └── Login.tsx
-│   │   ├── App.tsx
-│   │   ├── index.css
-│   │   ├── index.tsx
-│   │   └── reportWebVitals.ts
-│   ├── .env.example
-│   ├── package.json
-│   ├── tsconfig.json
-│   └── Dockerfile
+│   └── src
+│       └── components
 ├── kong
 │   ├── config
 │   │   └── kong.yaml
@@ -231,6 +222,7 @@ Para acessar as áreas administrativas dos serviços, utilize os seguintes ender
   - **Senha**: `admin`
 
 - **RabbitMQ**:
+
   - **URL**: `http://localhost/rabbitmq/`
   - **Usuário**: `guest`
   - **Senha**: `guest`
