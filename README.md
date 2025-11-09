@@ -80,6 +80,7 @@ O projeto é composto pelos seguintes serviços:
 - **Autenticação**: Keycloak
 - **API Gateway**: Kong
 - **Containerização**: Docker, Docker Compose
+- **Observabilidade**: Grafana, Loki, Promtail
 - **Comunicação em Tempo Real**: WebSockets
 - **Servidor WSGI**: Gunicorn, Eventlet
 - **Outros**: Pika (para RabbitMQ), Kombu, Psycopg2, PyMongo
@@ -117,6 +118,14 @@ O projeto é composto pelos seguintes serviços:
 │   │   └── nginx.conf
 │   └── docker
 │       └── Dockerfile
+├── observability
+│   ├── grafana
+│   │   └── provisioning
+│   │       └── datasources
+│   │           └── loki.yml
+│   ├── logs
+│   └── promtail
+│       └── config.yml
 ├── public
 │   ├── arquitetura-sistema.jpeg
 │   └── fala-blau.jpeg
