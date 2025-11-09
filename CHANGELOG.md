@@ -5,6 +5,18 @@ Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Mantenha um Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [0.2.0] - 2025-11-08
+
+### Adicionado
+- **Componentes de Observabilidade:**
+  - Adicionado Grafana para visualização de logs e métricas.
+  - Adicionado Loki para agregação e armazenamento de logs.
+  - Adicionado Promtail para coleta e envio de logs para o Loki.
+- **Configuração de Logs:**
+  - Configurado o Promtail para coletar logs dos microserviços (`user-service`, `chat-service`, `websocket-service`) e do Nginx.
+  - Volumes de logs configurados para persistência e acesso pelo Promtail.
+  - Datasource do Loki pré-configurado no Grafana para visualização dos logs.
+
 ## [0.1.0] - 2025-11-07
 
 ### Adicionado

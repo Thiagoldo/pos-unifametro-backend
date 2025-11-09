@@ -13,10 +13,12 @@ Este projeto, denominado FalaBLAU, foi desenvolvido como trabalho de conclusão 
 ## 📜 Sumário
 
 - [Funcionalidades](#-funcionalidades)
+- [Melhorias e Próximos Passos](#-melhorias-e-próximos-passos)
 - [Arquitetura](#️-arquitetura)
 - [Tecnologias Utilizadas](#-tecnologias-utilizadas)
 - [Estrutura do Projeto](#-estrutura-do-projeto)
 - [Como Executar](#-como-executar)
+- [Observabilidade](#-observabilidade)
 - [Documentação](#-documentação)
 - [Serviços e Portas](#-serviços-e-portas)
 - [API Endpoints](#-api-endpoints)
@@ -37,13 +39,20 @@ O projeto está em desenvolvimento e as seguintes funcionalidades estão planeja
 
 ## 🎯 Melhorias e Próximos Passos
 
-- **Implementar Logging Estruturado**:
-  - [ ] Adicionar logging estruturado em todos os microsserviços (`user-service`, `chat-service`, `websocket-service`) para gerar logs em arquivos.
-- **Configurar a Camada de Observabilidade**:
-  - [ ] Configurar o Promtail para coletar logs de todos os microsserviços e do Nginx.
-  - [ ] Criar dashboards no Grafana para visualizar e consultar os logs agregados pelo Loki.
-  - [ ] Integrar o Prometheus para coletar métricas de aplicação (ex: latência de requisições, taxas de erro) e de sistema (ex: uso de CPU/memória dos contêineres).
-  - [ ] Desenvolver dashboards no Grafana para monitorar as métricas do Prometheus.
+- **Aprimorar a Observabilidade**:
+  - [ ] Implementar **logging estruturado** (ex: JSON) em todos os microsserviços para facilitar a consulta e análise de logs.
+  - [ ] Integrar o **Prometheus** para coletar métricas de aplicação (ex: latência de requisições, taxas de erro) e de sistema (ex: uso de CPU/memória dos contêineres).
+  - [ ] Desenvolver dashboards no Grafana para monitorar as métricas do Prometheus e configurar alertas para condições críticas.
+  - [ ] Implementar **tracing distribuído** (ex: com Jaeger ou OpenTelemetry) para rastrear requisições através dos múltiplos serviços.
+
+- **Segurança e Qualidade**:
+  - [ ] Aumentar a cobertura de testes (unitários, integração e E2E) para garantir a estabilidade do sistema.
+  - [ ] Configurar um pipeline de **CI/CD** (Integração e Entrega Contínua) para automatizar o build, testes e deploy das aplicações.
+  - [ ] Implementar políticas de segurança mais robustas no API Gateway (Kong), como rate limiting e autenticação refinada.
+
+- **Funcionalidades do Core**:
+  - [ ] Finalizar a implementação das funcionalidades principais do chat, como gerenciamento de contatos, salas privadas e notificações.
+  - [ ] Desenvolver a interface de usuário no frontend para interagir com todas as funcionalidades do backend.
 
 ## 🏗️ Arquitetura
 
@@ -155,6 +164,22 @@ O projeto é composto pelos seguintes serviços:
 
 A aplicação estará disponível em `http://localhost`.
 
+## 🔭 Observabilidade
+
+O projeto utiliza o stack **Grafana + Loki + Promtail** para observabilidade de logs.
+
+- **Promtail**: Coleta os logs dos arquivos gerados por cada serviço.
+- **Loki**: Armazena e indexa os logs coletados.
+- **Grafana**: Permite visualizar, consultar e analisar os logs de forma centralizada.
+
+Para acessar a interface do Grafana, utilize os seguintes dados:
+
+- **URL**: `http://localhost:3000`
+- **Usuário**: `admin`
+- **Senha**: `admin`
+
+Dentro do Grafana, o datasource do Loki já está pré-configurado, permitindo que você explore os logs de todos os serviços utilizando a linguagem de consulta **LogQL**.
+
 ## 📄 Documentação
 
 Para mais detalhes sobre a arquitetura e o fluxo de dados do sistema, consulte os seguintes documentos:
@@ -172,6 +197,8 @@ Para mais detalhes sobre a arquitetura e o fluxo de dados do sistema, consulte o
 | **nginx**             | 80    | Proxy reverso para todos os serviços            |
 | **kong**              | 8000  | API Gateway                                     |
 | **keycloak**          | 8080  | Servidor de autenticação                        |
+| **grafana**           | 3000  | Interface de visualização de logs e métricas    |
+| **loki**              | 3100  | Armazenamento de logs                           |
 | **user-service**      | 3001  | Microsserviço de usuários                       |
 | **chat-service**      | 3002  | Microsserviço de chat                           |
 | **websocket-service** | 3003  | Serviço de WebSocket para comunicação real-time |
@@ -207,6 +234,11 @@ Para acessar as áreas administrativas dos serviços, utilize os seguintes ender
   - **URL**: `http://localhost/rabbitmq/`
   - **Usuário**: `guest`
   - **Senha**: `guest`
+
+- **Grafana**:
+  - **URL**: `http://localhost:3000`
+  - **Usuário**: `admin`
+  - **Senha**: `admin`
 
 ## 📜 Histórico de Alterações
 
